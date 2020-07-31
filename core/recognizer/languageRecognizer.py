@@ -3,11 +3,17 @@
 from ..lark import Lark, Transformer
 
 class LanguageRecognizer:
-    def __init__(self): pass
+    def __init__(self):
+        """
+            #! La idea es que si al terminar de analizar los dos atributos son falsos entonces retorne que el archivo no pertenece a ninguno.
+            #! Y cuando uno de los dos sea verdadero entonces ese es el lenguaje detectado.
+        """
+        self.isRuby = False
+        self.isBash = False
 
     def recognize(self,filename,content):
         
-        # TODO: Hacer las funcioines de procesamiento caracter a caracter para detectar el lenguaje
+        # TODO: Hacer las funciones de procesamiento caracter a caracter para detectar el lenguaje
         
         language : str = "Ruby" #* Seria el lenguaje detectado por elñ analisis
         self.printResults(language,filename,content)
