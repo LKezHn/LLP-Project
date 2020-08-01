@@ -8,8 +8,8 @@ class LanguageRecognizer:
             #! La idea es que si al terminar de analizar los dos atributos son falsos entonces retorne que el archivo no pertenece a ninguno.
             #! Y cuando uno de los dos sea verdadero entonces ese es el lenguaje detectado.
         """
-        self.isRuby = False
-        self.isBash = False
+        self.isRuby : bool = False
+        self.isBash : bool = False
 
     def recognize(self,filename,content):
         
@@ -20,10 +20,10 @@ class LanguageRecognizer:
 
     def printResults(self, language: str, filename : str, content : str) -> str:
         print("Resultados")
-        print("*"*60)
-        print("*\t%s" % language)
-        print("*"*60)
-        print("*\t%s" % filename)
-        print("*"*60)
+        print("-"*40)
+        print("\tLenguaje: %s" % language)
+        print("-"*40)
+        print("\tNombre de archivo: %s" % filename)
+        print("-"*40)
         print(content)
-        print("*"*60)
+        print("-"*40)
