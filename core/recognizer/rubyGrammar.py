@@ -15,8 +15,10 @@ rubyGrammar = """
         | boolean
 
     ?string: /"[^"]*"/
+        | /'[^']*'/
 
-    ?number: /[0-9]*/
+    ?number: /\d+(\.\d+)?/
+
 
     ?boolean: /[(true)|(false)]
 
