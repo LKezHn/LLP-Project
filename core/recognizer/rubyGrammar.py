@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#! Solo estan las gramaticas de variabñes, prints. y comentarios
+#! Solo estan las gramaticas de variables, prints. y comentarios
 
 rubyGrammar = """
 
