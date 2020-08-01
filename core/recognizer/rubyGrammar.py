@@ -4,7 +4,7 @@
     ? Strings, booleanos, ints, floats
     ? Asignación de variables, Método puts
     ? Condicional if
-    ? Bucles fopr y while
+    ? Bucles for y while
     ? Comentarios (Revisar)
     ? Comparaciones
     ? Operaciones aritméticas
@@ -13,6 +13,7 @@
     TODO: Falta hacer la gramatica de llamado a funcion, concatenacion en strings.
     TODO: Corregir gramatica de comentario de multiples lineas
 """
+
 
 rubyGrammar = """
 
