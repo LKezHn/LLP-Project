@@ -10,12 +10,12 @@ class LanguageRecognizer:
         """
         self.isRuby : bool = False
         self.isBash : bool = False
+        self.isJavascript : bool = False
 
     def recognize(self,filename,content):
         
-        # TODO: Hacer las funciones de procesamiento caracter a caracter para detectar el lenguaje
-        
-        language : str = "Ruby" #* Seria el lenguaje detectado por elñ analisis
+        # TODO: Hacer las funciones de procesamiento caracter a caracter para detectar el lenguaje.
+        language : str = "Ruby" #* Seria el lenguaje detectado por el analisis
         self.printResults(language,filename,content)
 
     def printResults(self, language: str, filename : str, content : str) -> str:
