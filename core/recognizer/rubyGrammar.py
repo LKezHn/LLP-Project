@@ -4,13 +4,14 @@
     ? Strings, booleanos, ints, floats
     ? Asignación de variables, Método puts
     ? Condicional if
-    ? Bucles fopr y while
-    ? Comentarios
+    ? Bucles for y while
+    ? Comentarios (Revisar)
     ? Comparaciones
     ? Operaciones aritméticas
+    ? Definicion de funcion
 
-
-    TODO: Falta hacer la gramatica de definicion de funcion, llamado a funcion, concatenacion en strings.
+    TODO: Falta hacer la gramatica de llamado a funcion, concatenacion en strings.
+    TODO: Corregir gramatica de comentario de multiples lineas
 """
 
 
@@ -18,12 +19,16 @@ rubyGrammar = """
 
     ?start : exp+
 
-    ?exp : var "=" value
+    ?exp : var "=" string -> assignvar
+        | var "=" boolean -> assignvar
         | var "=" arithmeticoperation  -> assignvar
         | "puts" "("? string ")"?   -> print
         | "puts" "("? var ")"?  -> printvar
+        | arithmeticoperation
 	    | conditional
         | loop
+        | definefunction
+        | return
 
     ?arithmeticoperation: arithmeticoperationatom
         | arithmeticoperation "+" arithmeticoperationatom -> sum
@@ -33,15 +38,21 @@ rubyGrammar = """
 
     ?arithmeticoperationatom: var -> getvar
         | number
-        | "-" arithmeticoperationatom
-        | "(" arithmeticoperationatom ")"
-
-    ?var: /[a-zA-Z][\w_]*
-
-    ?value: string
-        | number
-        | boolean
+        | "-" arithmeticoperation
+        | "(" arithmeticoperation ")"
     
+    ?return: "return" string
+        | "return" number
+        | "return" boolean
+
+    ?definefunction: "def" var "("?  params ")"? instruction END 
+
+    ?params: string
+        | number
+        | var
+        | string "," params
+        | number "," params
+        | var "," params
 
     ?loop: for
         | while
@@ -66,7 +77,7 @@ rubyGrammar = """
         | ">="
         | equals
        
-     ?equals: "=="
+    ?equals: "=="
     
     ?instruction: exp*
         | /[^(END)]/*
