@@ -9,9 +9,8 @@
     ? Comparaciones
     ? Operaciones aritméticas
     ? Definicion de funcion
-
-    TODO: Falta hacer la gramatica de llamado a funcion, concatenacion en strings.
-    TODO: Corregir gramatica de comentario de multiples lineas
+    ? Gramatica de llamado a funcion
+    ?Concatenacion en strings.
 """
 
 
@@ -21,20 +20,22 @@ rubyGrammar = """
 
     ?exp : var "=" string -> assignvar
         | var "=" boolean -> assignvar
-        | var "=" arithmeticoperation  -> assignvar
-        | "puts" "("? string ")"?   -> print
-        | "puts" "("? var ")"?  -> printvar
+        | var "=" arithmeticoperation 
+        | "puts" "("? string ")"? 
+        | "puts" "("? string ")"? "%" "["? params "]"? 
+        | "puts" "("? var ")"? 
         | arithmeticoperation
 	    | conditional
         | loop
         | definefunction
-        | return
+        | callfunction
+        | return  
 
     ?arithmeticoperation: arithmeticoperationatom
-        | arithmeticoperation "+" arithmeticoperationatom -> sum
-        | arithmeticoperation "-" arithmeticoperationatom  -> sub
-        | arithmeticoperation "*" arithmeticoperationatom  -> mult
-        | arithmeticoperation "/" arithmeticoperationatom  -> div
+        | arithmeticoperation "+" arithmeticoperationatom 
+        | arithmeticoperation "-" arithmeticoperationatom 
+        | arithmeticoperation "*" arithmeticoperationatom 
+        | arithmeticoperation "/" arithmeticoperationatom 
 
     ?arithmeticoperationatom: var -> getvar
         | number
@@ -47,12 +48,16 @@ rubyGrammar = """
 
     ?definefunction: "def" var "("?  params ")"? instruction END 
 
+    ?callfunction: var "(" params ")"
+
     ?params: string
         | number
         | var
+        | callfunction
         | string "," params
         | number "," params
         | var "," params
+        | callfunction "," params
 
     ?loop: for
         | while
