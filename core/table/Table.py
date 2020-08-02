@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-class InfoTable:
+class Table:
     def __init__(self): pass
 
-    def print(self,param):
+    def printInfoTable(self,param):
             print("*"*40)
             print("{1} {0:36s} {1}".format("","*"))
             print("{1} {0:36s} {1}".format("Intérprete de Lenguajes","*"))
