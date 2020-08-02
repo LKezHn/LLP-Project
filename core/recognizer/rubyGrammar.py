@@ -20,6 +20,7 @@ rubyGrammar = """
 
     ?exp : var "=" string -> assignvar
         | var "=" boolean -> assignvar
+        | var "=" NONE -> assignvar
         | var "=" arithmeticoperation 
         | "puts" "("? string ")"? 
         | "puts" "("? string ")"? "%" "["? params "]"? 
@@ -45,10 +46,11 @@ rubyGrammar = """
     ?return: "return" string
         | "return" number
         | "return" boolean
+        | "return" NONE
 
-    ?definefunction: "def" var "("?  params ")"? instruction END 
+    ?definefunction: "def" var "("?  params ")"? instruction END -> createfunction
 
-    ?callfunction: var "(" params ")"
+    ?callfunction: var "(" params ")" -> callfunction
 
     ?params: string
         | number
@@ -96,6 +98,8 @@ rubyGrammar = """
     
     // Definicion de variable
     ?var: /[a-zA-Z]\w*/
+
+    NONE: "None"
 
     // Definicion de numero
     ?number: int
