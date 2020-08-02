@@ -9,7 +9,3 @@ class RecognizerSemantic(Transformer):
     def __init__(self):
         self.variables = {}
         self.function = {}
-
-    def sum(self,A,B):
-        return float(A) + float(B)
-    
