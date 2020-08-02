@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from ..lark import Lark, Transformer
+from .javascriptSemantic import javascriptSemantic
 from .rubyGrammar import *
+from .javascriptGrammar import *
 from .RecognizerSemantic import RecognizerSemantic
 
 class LanguageRecognizer:
@@ -14,6 +16,23 @@ class LanguageRecognizer:
         self.isBash : bool = True
         self.isJavascript : bool = True
         self.error = None
+
+    def recognizeJS(self,filename,content):
+        errorMessage = "\033[1;31mError: %s."
+        if(filename.endswith('.js')):
+
+            parser = Lark(javascriptGrammar, parser="lalr",transformer = javascriptSemantic())
+            language = parser.parse
+            sample = content
+            try:
+                language(sample)
+            except Exception as e:
+                self.isJavascript = False
+                quit(errorMessage % e)
+        else:
+            self.isJavascript = False
+            quit(errorMessage % "El archivo no pertenece al lenguaje de Javascript")
+
 
     def recognize(self,filename,content):
         
