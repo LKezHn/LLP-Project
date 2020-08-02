@@ -51,7 +51,7 @@ class LanguageRecognizer:
             self.printResults("Ruby",filename, content)
         #! Aqui seria el analisis de Bash, y si no es ninguno lanza la excepcion
         else:
-            raise Exception("El archivo no pertenece al lenguaje Ruby")
+            raise Exception(self.error) #*Debug
 
     def printResults(self, language: str, filename : str, content : str) -> str:
         print("Resultados")
