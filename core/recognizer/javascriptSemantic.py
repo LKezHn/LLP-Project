@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 import re
-from lark import Transformer, v_args
+from ..lark import Transformer, v_args
 
 errorMessage = "\033[1;31mError: %s"
 
 @v_args(inline=True)
-class Semantic (Transformer):
+class javascriptSemantic (Transformer):
 
     def __init__(self):
         self.variables = {}
@@ -59,6 +59,7 @@ class Semantic (Transformer):
     def printvar_alt(self, name, concat):
         print("%s %s" % (self.cleanParam(self.getvar(name)),self.getvar(concat)))
     
+    #Limpia las ' "" ' y " '' " a la hora de impresión.
     def cleanParam(self, param):
         if re.match(r"^((\"[^\"]*\")|('[^']*'))$", param):
             return param[1:-1]
