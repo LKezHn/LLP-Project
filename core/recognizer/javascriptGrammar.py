@@ -29,78 +29,134 @@ javascriptGrammar = """
         | exp+
 
     ?exp: cond
-        | "var" name ";" -> assignvarnone
-        | "var" name "=" string ";" -> assignvar
-        | "var" name "=" string "+" name ";" -> assignvaralt
-        | "var" name "=" arithmeticoperation ";" -> assignvar
-        | "var" name "=" bool ";" -> assignvar 
+        | varkeyword identifier eos -> assignvarnone
+        | varkeyword identifier opcompare string eos -> assignvar
+        | varkeyword identifier opcompare string opsum identifier eos -> assignvaralt
+        | varkeyword identifier opcompare arithmeticoperation eos -> assignvar
+        | varkeyword identifier opcompare bool eos -> assignvar 
 
-        | "console" "." "log" "(" string ")" ";" -> print_
-        | "console" "." "log" "(" string "+" name ")" ";" -> print_alt
+        | consolelog leftpar string rightpar eos -> print_
+        | consolelog leftpar string opsum identifier rightpar eos -> print_alt
 
-        | "console" "." "log" "(" name ")" ";" -> printvar
-        | "console" "." "log" "(" name "+" name ")" ";" -> printvar_alt
+        | consolelog leftpar identifier rightpar eos -> printvar
+        | consolelog leftpar identifier "+" identifier rightpar eos -> printvar_alt
 
-        | "console" "." "error" "(" string ")" ";" -> print_error
+        | consoleerror leftpar string rightpar eos -> print_error
 
-        | funcname "(" number "," number ")" ";"
-        | funcname "(" number "," name ")" ";"
-        | funcname "(" name "," number ")" ";"
-        | funcname "(" name "," name ")" ";"
+        | funcname leftpar (int | float) "," (int | float) rightpar eos
+        | funcname leftpar (int | float) "," identifier rightpar eos
+        | funcname leftpar identifier "," (int | float) rightpar eos
+        | funcname leftpar identifier "," identifier rightpar eos
    
-    ?cl: "class" funcname "{" function+ "}"
+    ?cl: "class" funcname leftbrace function+ rightbrace
 
-    ?function: "function" funcname "(" name ")" "{" infunc+ "}"
-        | "function" funcname "(" name "," name ")" "{" infunc+ "}"
-        | "function" funcname "(" ")" "{" infunc+ "}"
+    ?function: funkeyword funcname leftpar identifier rightpar leftbrace infunc+ rightbrace
+        | funkeyword funcname leftpar identifier "," identifier rightpar leftbrace infunc+ rightbrace
+        | funkeyword funcname leftpar rightpar leftbrace infunc+ rightbrace
 
-    ?funcname: name -> createfunc
+    ?funcname: identifier -> createfunc
 
-    ?infunc: exp+ "return" exp ";"
-        | exp+ "return" name "*" name "(" arithmeticoperation ")" ";" 
+    ?infunc: exp+ returnkeyword exp eos
+        | exp+ returnkeyword identifier opmult identifier leftpar arithmeticoperation rightpar eos 
         | exp+
         
-    ?cond: "if" "(" name ">" name ")" "return" number ";" -> ifcondg
-        | "if" "(" name ">" name ")" "return" name ";" -> ifcondg
-        | "if" "(" name ">" number ")" "return" number ";" -> ifcondg
-        | "if" "(" name ">" number ")" "return" name ";" -> ifcondg
+    ?cond: ifkeyword leftpar identifier opgrtrthan identifier rightpar returnkeyword (int | float) eos -> ifcondgnames
+        | ifkeyword leftpar identifier opgrtrthan identifier rightpar returnkeyword identifier eos -> ifcondgnames
+        | ifkeyword leftpar identifier opgrtrthan (int | float) rightpar returnkeyword (int | float) eos -> ifcondg
+        | ifkeyword leftpar identifier opgrtrthan (int | float) rightpar returnkeyword identifier eos -> ifcondg
 
-        | "if" "(" name "==" name ")" "return" number ";" -> ifconde
-        | "if" "(" name "==" name ")" "return" name ";" -> ifconde
-        | "if" "(" name "==" number ")" "return" number ";" -> ifconde
-        | "if" "(" name "==" number ")" "return" name ";" -> ifconde
+        | ifkeyword leftpar identifier opcompare identifier rightpar returnkeyword (int | float) eos -> ifcondenames
+        | ifkeyword leftpar identifier opcompare identifier rightpar returnkeyword identifier eos -> ifcondenames
+        | ifkeyword leftpar identifier opcompare (int | float) rightpar returnkeyword (int | float) eos -> ifconde
+        | ifkeyword leftpar identifier opcompare (int | float) rightpar returnkeyword identifier eos -> ifconde
 
-        | "if" "(" name "<" name ")" "return" number ";" -> ifcondl
-        | "if" "(" name "<" name ")" "return" name ";" -> ifcondl
-        | "if" "(" name "<" number ")" "return" number ";" -> ifcondl
-        | "if" "(" name "<" number ")" "return" name ";" -> ifcondl
+        | ifkeyword leftpar identifier oplessthan identifier rightpar returnkeyword (int | float) eos -> ifcondlnames
+        | ifkeyword leftpar identifier oplessthan identifier rightpar returnkeyword identifier eos -> ifcondlnames
+        | ifkeyword leftpar identifier oplessthan (int | float) rightpar returnkeyword (int | float) eos -> ifcondl
+        | ifkeyword leftpar identifier oplessthan (int | float) rightpar returnkeyword identifier eos -> ifcondl
 
-        | "if" "(" name ">" name ")" "{" exp+ "}" "else" "{" exp+ "}" 
-        | "if" "(" name "<" name ")" "{" exp+ "}" "else" "{" exp+ "}"
-        | "if" "(" name "==" name ")" "{" exp+ "}" "else" "{" exp+ "}"
+        | ifkeyword leftpar identifier opgrtrthan identifier rightpar leftbrace (exp+) rightbrace "else" leftbrace (exp+) rightbrace 
+        | ifkeyword leftpar identifier oplessthan identifier rightpar leftbrace (exp+) rightbrace "else" leftbrace (exp+) rightbrace
+        | ifkeyword leftpar identifier opcompare identifier rightpar leftbrace (exp+) rightbrace "else" leftbrace (exp+) rightbrace
 
-    ?bool: "true" 
-        | "false"
-        | "null"
+    ?ciclicOperation: whilekeyword leftpar identifier ">" identifier rightpar leftbrace exp+ rightbrace
+        | whilekeyword leftpar identifier opgrtrthan (int | float) rightpar leftbrace exp+ rightbrace
+        | whilekeyword leftpar identifier oplessthan identifier rightpar leftbrace exp+ rightbrace
+        | whilekeyword leftpar identifier oplessthan (int | float) rightpar leftbrace exp+ rightbrace
+        | whilekeyword leftpar identifier opgrtrthanequal identifier rightpar leftbrace exp+ rightbrace
+        | whilekeyword leftpar identifier opgrtrthanequal (int | float) rightpar leftbrace exp+ rightbrace
+        | whilekeyword leftpar identifier oplessthanequal identifier rightpar leftbrace exp+ rightbrace
+        | whilekeyword leftpar identifier oplessthanequal (int | float) rightpar leftbrace exp+ rightbrace
+        | whilekeyword leftpar identifier opcompare identifier rightpar leftbrace exp+ rightbrace
+        | whilekeyword leftpar identifier opcompare (int | float) rightpar leftbrace exp+ rightbrace
 
     ?arithmeticoperation: arithmeticoperationatom
 
-        | arithmeticoperation "+" arithmeticoperationatom -> sum
-        | arithmeticoperation "-" arithmeticoperationatom -> sub
-        | arithmeticoperation "*" arithmeticoperationatom -> multi
-        | arithmeticoperation "/" arithmeticoperationatom -> div
+        | arithmeticoperation opsum arithmeticoperationatom -> sum
+        | arithmeticoperation opsub arithmeticoperationatom -> sub
+        | arithmeticoperation opmult arithmeticoperationatom -> multi
+        | arithmeticoperation opdiv arithmeticoperationatom -> div
 
-    ?arithmeticoperationatom: name -> getvar
-        | number
-        | "(" arithmeticoperation ")" 
-        | "-" arithmeticoperationatom       
+    ?arithmeticoperationatom: identifier -> getvar
+        | int
+        | float
+        | leftpar arithmeticoperation rightrightbrace 
+        | opsub arithmeticoperationatom       
 
     ?string: /"[^"]*"/
         | /'[^']*'/
 
-    ?name: /[a-zA-Z]\w*/
+    ?identifier: /[a-zA-Z]\w*/
 
-    ?number: /\d+(\.\d+)?/
+    !bool: "true" 
+        | "false"
+        | "null"
+
+    !opsum: "+"
+
+    !opsub: "-"
+
+    !opmult: "*"
+
+    !opdiv: "/"
+
+    !funkeyword: "function"
+
+    !returnkeyword: "return"
+
+    !whilekeyword: "while"
+
+    !ifkeyword: "if"
+
+    !varkeyword: "var"
+
+    !consolelog: "console" "." "log"
+
+    !consoleerror: "console" "." "error"
+
+    !leftpar: "("
+
+    !rightpar: ")"
+
+    !leftbrace: "{"
+
+    !rightbrace: "}"
+
+    !opcompare: "=="
+
+    !opgrtrthan: ">"
+
+    !oplessthan: "<"
+
+    !opgrtrthanequal: ">="
+
+    !oplessthanequal: "<="
+
+    !eos: ";"
+
+    ?float: /\d+(\.\d+)?/
+
+    ?int: /\d+/
 
     COMMENT: /\/.*/
     %ignore COMMENT
