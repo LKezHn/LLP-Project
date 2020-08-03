@@ -26,7 +26,7 @@ else:
         filename = sys.argv[2]
         try:
             f = open(filename,"r")
-            (LanguageRecognizer()).recognizeJS(filename,text)
+            (LanguageRecognizer()).recognizeJS(filename,f.read())
         except Exception as e:
             quit(errorMessage % e)
     else:
