@@ -8,14 +8,14 @@
     * Comparaciones simples (==, <, >, <=, >=) de un condicional a la vez.
     * Declaración y ejecución de funciones de hasta 2 parámetros (sin parámetros por defecto). El tipo de dato de los parámetros es el mismo que el de las asignaciones.
     * Generación de mensajes de salida (console.log y console.error). Deberá controlar el color de la salida en Linux para identificar el tipo de mensaje. Estos métodos nativamente permiten más de un parámetro.
+    * Length de cualquier objeto.
 
 ! Parcialmente Terminado
     * Estructuras de control de flujo (if, while, for).
         * Falta: while y for.
 
 ! Por empezar
-    * Llamado y Ejecución de funciones (recursivas o no).
-    * Length de cualquier objeto.
+    * Ejecución de funciones (recursivas o no).
 
 ! Observaciones
     * En el sample.js las instrucciones: 'console.log' y 'console.error', se ejecutan aun dentro de la estructura if ya que aun no se entiende cuando se debe entrar o no a una estructura de flujo.
@@ -24,37 +24,38 @@
 javascriptGrammar = """
 
     ?start: exp+ function+ exp+
-        | exp+ cl+ exp+
-        | exp+ function+ exp+
         | exp+
 
     ?exp: cond
-        | varkeyword identifier eos -> assignvarnone
-        | varkeyword identifier opcompare string eos -> assignvar
-        | varkeyword identifier opcompare string opsum identifier eos -> assignvaralt
-        | varkeyword identifier opcompare arithmeticoperation eos -> assignvar
-        | varkeyword identifier opcompare bool eos -> assignvar 
+        | varkeyword identifier opequals string eos -> assignvar
+        | varkeyword identifier opequals string opsum identifier eos -> assignvaralt
+        | varkeyword identifier opequals arithmeticoperation eos -> assignvar
+        | varkeyword identifier opequals bool eos -> assignvar 
 
         | consolelog leftpar string rightpar eos -> print_
+        | consolelog leftpar string "," identifier leftpar identifier rightpar rightpar eos 
         | consolelog leftpar string opsum identifier rightpar eos -> print_alt
 
         | consolelog leftpar identifier rightpar eos -> printvar
         | consolelog leftpar identifier "+" identifier rightpar eos -> printvar_alt
 
+        | consolelog leftpar arithmeticoperation rightpar eos -> printnum
+        | consolelog leftpar arithmeticoperation "+" arithmeticoperation rightpar eos -> printnum_alt
+
         | consoleerror leftpar string rightpar eos -> print_error
 
-        | funcname leftpar (int | float) "," (int | float) rightpar eos
-        | funcname leftpar (int | float) "," identifier rightpar eos
-        | funcname leftpar identifier "," (int | float) rightpar eos
-        | funcname leftpar identifier "," identifier rightpar eos
-   
-    ?cl: "class" funcname leftbrace function+ rightbrace
+        | identifier leftpar (int | float) "," (int | float) rightpar eos 
+        | identifier leftpar (int | float) "," identifier rightpar eos
+        | identifier leftpar identifier "," (int | float) rightpar eos
+        | identifier leftpar identifier "," identifier rightpar eos
+        | identifier leftpar identifier rightpar eos -> exefunc
+        | identifier leftpar (int | float) rightpar eos
 
-    ?function: funkeyword funcname leftpar identifier rightpar leftbrace infunc+ rightbrace
-        | funkeyword funcname leftpar identifier "," identifier rightpar leftbrace infunc+ rightbrace
-        | funkeyword funcname leftpar rightpar leftbrace infunc+ rightbrace
+        | consolelog leftpar identifier "." "length" rightpar eos -> length
 
-    ?funcname: identifier -> createfunc
+    ?function: funkeyword identifier leftpar identifier rightpar leftbrace infunc+ rightbrace -> createfunc
+        | funkeyword identifier leftpar identifier "," identifier rightpar leftbrace infunc+ rightbrace -> createfuncs
+        | funkeyword identifier leftpar rightpar leftbrace infunc+ rightbrace -> createfun
 
     ?infunc: exp+ returnkeyword exp eos
         | exp+ returnkeyword identifier opmult identifier leftpar arithmeticoperation rightpar eos 
@@ -79,17 +80,7 @@ javascriptGrammar = """
         | ifkeyword leftpar identifier oplessthan identifier rightpar leftbrace (exp+) rightbrace "else" leftbrace (exp+) rightbrace
         | ifkeyword leftpar identifier opcompare identifier rightpar leftbrace (exp+) rightbrace "else" leftbrace (exp+) rightbrace
 
-    ?ciclicOperation: whilekeyword leftpar identifier ">" identifier rightpar leftbrace exp+ rightbrace
-        | whilekeyword leftpar identifier opgrtrthan (int | float) rightpar leftbrace exp+ rightbrace
-        | whilekeyword leftpar identifier oplessthan identifier rightpar leftbrace exp+ rightbrace
-        | whilekeyword leftpar identifier oplessthan (int | float) rightpar leftbrace exp+ rightbrace
-        | whilekeyword leftpar identifier opgrtrthanequal identifier rightpar leftbrace exp+ rightbrace
-        | whilekeyword leftpar identifier opgrtrthanequal (int | float) rightpar leftbrace exp+ rightbrace
-        | whilekeyword leftpar identifier oplessthanequal identifier rightpar leftbrace exp+ rightbrace
-        | whilekeyword leftpar identifier oplessthanequal (int | float) rightpar leftbrace exp+ rightbrace
-        | whilekeyword leftpar identifier opcompare identifier rightpar leftbrace exp+ rightbrace
-        | whilekeyword leftpar identifier opcompare (int | float) rightpar leftbrace exp+ rightbrace
-
+    
     ?arithmeticoperation: arithmeticoperationatom
 
         | arithmeticoperation opsum arithmeticoperationatom -> sum
@@ -100,7 +91,7 @@ javascriptGrammar = """
     ?arithmeticoperationatom: identifier -> getvar
         | int
         | float
-        | leftpar arithmeticoperation rightrightbrace 
+        | leftpar arithmeticoperation rightbrace 
         | opsub arithmeticoperationatom       
 
     ?string: /"[^"]*"/
@@ -108,9 +99,9 @@ javascriptGrammar = """
 
     ?identifier: /[a-zA-Z]\w*/
 
-    !bool: "true" 
-        | "false"
-        | "null"
+    !bool: "true" -> boolt
+        | "false" -> boolf
+        | "null" -> booln
 
     !opsum: "+"
 
@@ -141,6 +132,8 @@ javascriptGrammar = """
     !leftbrace: "{"
 
     !rightbrace: "}"
+
+    !opequals: "="
 
     !opcompare: "=="
 

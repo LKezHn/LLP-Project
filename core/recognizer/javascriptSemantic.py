@@ -2,7 +2,7 @@
 import re
 from ..lark import Transformer, v_args
 
-errorMessage = "\033[1;31mError: %s"
+errorMessage = "\033[1;31m %s"
 
 @v_args(inline=True)
 class javascriptSemantic (Transformer):
@@ -11,25 +11,30 @@ class javascriptSemantic (Transformer):
         self.variables = {}
         self.functions = {}
 
-    def sum (self, A, B):
+    def sum (self,A,op,B):
         return float(A) + float(B)
 
-    def sub (self, A, B):
+    def sub (self, A, op, B):
         return float(A) - float(B)
 
-    def multi(self,A,B):
+    def multi(self,A, op, B):
         return (float(A)*float(B))
 
-    def div(self,A,B):
+    def div(self,A, op, B):
         return (float(A)/float(B))
+
+    #Imprime el length de un string o numero.
+    def length(self,param,param2,param3,param4,param5):
+        if(self.getvar(param3) is None):
+            pass
+        elif(isinstance(self.getvar(param3),bool)):
+            pass
+        else:
+            print(len(self.cleanParam(self.getvar(param3))))
     
     #Asigna valor a una variable.
-    def assignvar(self, name, value):
-        self.variables[name] = str(value)
-    
-    #Declaración de una variable sin valor. e.g.: 'var = n;'
-    def assignvarnone(self, name):
-        self.variables[name] = None
+    def assignvar(self, keyword, name, param, value, param2):
+        self.variables[name] = value
 
     #Declaración de una variable con alguna otra variable o string.
     def assignvaralt(self, name, value, concat):
@@ -40,24 +45,35 @@ class javascriptSemantic (Transformer):
         return self.variables[name]
     
     #Impresión de 'console.log' con una cadena.
-    def print_(self, param):
-        print("%s" % self.cleanParam(param))
+    def print_(self, param,param2,value,param4,param5):
+        print("%s" % self.cleanParam(value))
+
+    #Impresión de 'console.log' con un numero.
+    def printnum(self,param,param2,value,param4,param5):
+        print(int(value))
+
+    #Impresión de 'console.log' con dos numeros.
+    def printnum_alt(self,param,param2,value,value2,param5,param6):
+        print(int(value)+int(value2))
 
     #Impresión de 'console.log' con una cadena.
-    def print_error(self, param):
-        print(errorMessage % self.cleanParam(param))
+    def print_error(self, param,param2,value,param4,param5):
+        print(errorMessage % self.cleanParam(value))
 
     #Impresión de 'console.log' con concatenado de una cadena o variable.
-    def print_alt(self, param, concat):
-        print("%s %s" % (self.cleanParam(param),self.getvar(concat)))
+    def print_alt(self, param, param2,value,param4,value2,param6,param7):
+        print("%s %s" % (self.cleanParam(value),self.getvar(value2)))
     
     #Impresión de 'console.log' de una variable.
-    def printvar(self, name):
-        print("%s" % self.cleanParam((self.getvar(name))))
+    def printvar(self, param,param2,value,param4,param5):
+        print("%s" % self.cleanParam((self.getvar(value))))
 
     #Impresión de 'console.log' con concatenado de dos variables.
-    def printvar_alt(self, name, concat):
-        print("%s %s" % (self.cleanParam(self.getvar(name)),self.getvar(concat)))
+    def printvar_alt(self, param,param2,value,value2,param5,param6):
+        if(isinstance(self.getvar(value),str) and isinstance(self.getvar(value2),str)):
+            print("%s %s" % (self.cleanParam(self.getvar(value)),self.cleanParam(self.getvar(value2))))
+        else:
+            print(int(self.getvar(value))+int(self.getvar(value2)))
     
     #Limpia las ' "" ' y " '' " a la hora de impresión.
     def cleanParam(self, param):
@@ -66,27 +82,33 @@ class javascriptSemantic (Transformer):
         return param
 
     #Guarda el nombre de la función.
-    def createfunc(self,val): 
-        self.functions[val] = None
+    def createfunc(self,param,name,param3,funcparam,param5,param6,param7,param8): 
+        self.functions[name] = funcparam 
+        #name es el nombre de la función y funcparam es el parametro de la función.
+    
+    def createfuncs(self,param,name,param3,funcparam,funcparam2,param6,param7,param8,param9):
+        self.functions[name] = funcparam, funcparam2
+
+    def createfun(self,param,name,param3,param4,param5,param6,param7):
+        self.functions[name] = 0
 
     #Devuelve el nombre de la función.
-    def getfunc(self,val):
-        return self.functions[val]
+    def getfunc(self,name):
+        return self.functions[name]
 
-    #Condicional 'if' sin 'else'
-    def ifcondl(self,param1,param2,returnedValue):
-        if(self.getvar(param1) < param2):
-            print(returnedValue)
+    #Ejecución de una función.
+    def exefunc(self,name,param2,param3,param4,param5):
+        if name in self.functions:
+            pass
+            #si la función existe hacer el llamado y ejecutarla.
+        else:
+            raise Exception ("La función no existe")
+
+    def boolt(self,A):
+        return True
+    
+    def boolf(self,A):
         return False
     
-    #Condicional 'if' sin 'else'
-    def ifcondg(self,param1,param2,returnedValue):
-        if(self.getvar(param1) > param2):
-            print(returnedValue)
-        return False
-
-    #Condicional 'if' sin 'else'
-    def ifconde(self,param1,param2,returnedValue):
-        if(self.getvar(param1) == param2):
-            print(returnedValue)
-        return False
+    def booln(self,A):
+        return None
