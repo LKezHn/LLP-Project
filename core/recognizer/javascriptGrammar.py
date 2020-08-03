@@ -80,7 +80,17 @@ javascriptGrammar = """
         | ifkeyword leftpar identifier oplessthan identifier rightpar leftbrace (exp+) rightbrace "else" leftbrace (exp+) rightbrace
         | ifkeyword leftpar identifier opcompare identifier rightpar leftbrace (exp+) rightbrace "else" leftbrace (exp+) rightbrace
 
-    
+    ?ciclicoperation: whilekeyword leftpar identifier ">" identifier rightpar leftbrace exp+ rightbrace
+        | whilekeyword leftpar identifier opgrtrthan (int | float) rightpar leftbrace exp+ rightbrace
+        | whilekeyword leftpar identifier oplessthan identifier rightpar leftbrace exp+ rightbrace
+        | whilekeyword leftpar identifier oplessthan (int | float) rightpar leftbrace exp+ rightbrace
+        | whilekeyword leftpar identifier opgrtrthanequal identifier rightpar leftbrace exp+ rightbrace
+        | whilekeyword leftpar identifier opgrtrthanequal (int | float) rightpar leftbrace exp+ rightbrace
+        | whilekeyword leftpar identifier oplessthanequal identifier rightpar leftbrace exp+ rightbrace
+        | whilekeyword leftpar identifier oplessthanequal (int | float) rightpar leftbrace exp+ rightbrace
+        | whilekeyword leftpar identifier opcompare identifier rightpar leftbrace exp+ rightbrace
+        | whilekeyword leftpar identifier opcompare (int | float) rightpar leftbrace exp+ rightbrace
+
     ?arithmeticoperation: arithmeticoperationatom
 
         | arithmeticoperation opsum arithmeticoperationatom -> sum
