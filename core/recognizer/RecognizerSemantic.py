@@ -28,3 +28,48 @@ class RecognizerSemantic(Transformer):
                 raise Exception("faltan parametros")
         else:
             raise Exception("No existe la funcion")
+
+    def sum(self,A,B):
+
+        return float(A) + float(B) 
+
+    def sub(self,A,B):
+
+        return float(A) + float(B)
+
+    def mul(self,A,B):
+
+        return float(A) * float(B)
+
+    def div(self,A,B):
+
+        return float(A) / float(B)
+
+    def mod(self,A,B):
+
+        return float(A) % float(B)
+
+    def assignvar(self,name,value):
+
+        self.variables[name] = value
+
+    def getvar(self,name):
+
+        return self.variables[name]   
+
+     def print(self,param):
+
+        print("%s" % self.cleanParam(param))
+
+    def printvar(self,name):
+
+        print("%s" % self.getvar(name))
+
+    def cleanParam(self,param):
+
+        if re.match(r"^(\"[^\"]*\")|('[^']*'))$",param):
+
+            return param[1:-1]
+            return param                        
+
+
