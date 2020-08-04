@@ -97,9 +97,41 @@ class javascriptSemantic (Transformer):
         return self.functions[name]
 
     #Ejecución de una función.
-    def exefunc(self,name,param2,param3,param4,param5):
+    def exefunc(self,name,param2,value,param4,param5):
         if name in self.functions:
-            pass
+            if(isinstance(int(value),int)):
+                self.functions[name] = value
+                #si la función existe hacer el llamado y ejecutarla.
+            elif(isinstance(int(self.getvar(value)),int)):
+                self.functions[name] = self.getvar(value)
+        else:
+            raise Exception ("La función no existe")
+
+    def runfunc(self,name,param2,value,value2,param5,param6):
+        if name in self.functions:
+            #Si ambos parametros son enteros.
+            if(isinstance(int(value),int) and isinstance(int(value2),int)):
+                self.functions[name] = value, value2
+
+            #Si el primer parametro es entero y el segundo es una varible.
+            elif(isinstance(int(value),int) and isinstance(self.getvar(value2),str)):
+                self.functions[name] = value, self.getvar(value2)
+
+            #Si ambos parametros son enteros.
+            elif(isinstance(int(self.getvar(value)),int) and isinstance(int(value2),int)):
+                self.functions[name] = self.getvar(value), value2
+
+            #Si el primer parametro es entero y el segundo es una varible.
+            elif(isinstance(int(self.getvar(value)),int) and isinstance(self.getvar(value2),str)):
+                self.functions[name] = self.getvar(value), self.getvar(value2)
+
+            #Si el primer parametro es una variable y el segundo es un entero.
+            elif(isinstance(self.getvar(value),str) and isinstance(int(value2),int)):
+                self.functions[name] = self.getvar(value), value2
+
+            #Si el primer parametro es una varible y el segundo es una varible.
+            elif(isinstance(self.getvar(value),str) and isinstance(self.getvar(value2),str)):
+                self.functions[name] = self.getvar(value), self.getvar(value2)
             #si la función existe hacer el llamado y ejecutarla.
         else:
             raise Exception ("La función no existe")
@@ -112,3 +144,57 @@ class javascriptSemantic (Transformer):
     
     def booln(self,A):
         return None
+
+    def opsum(self,A):
+        return A
+
+    def opsub(self,A):
+        return A
+
+    def opmult(self,A):
+        return A
+
+    def opdiv(self,A):
+        return A
+
+    def ifw(self,A):
+        return A
+
+    def funcw(self,A):
+        return A
+
+    def retw(self,A):
+        return A
+
+    def whilew(self,A):
+        return A
+
+    def leftpar(self,A):
+        return A
+
+    def rightpar(self,A):
+        return A
+
+    def varkeyword(self,A):
+        return A
+
+    def leftbrace(self,A):
+        return A
+
+    def rightbrace(self,A):
+        return A
+
+    def opequals(self,A):
+        return A
+
+    def opcompare(self,A):
+        return A
+
+    def opgrtrthan(self,A):
+        return A
+
+    def oplessthan(self,A):
+        return A
+
+    def forw(self,A):
+        return A
