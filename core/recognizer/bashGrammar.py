@@ -3,10 +3,13 @@
 
 """
     ! Bash Grammar
-    TODO: Comments
-    TODO: Function Definitio
-    TODO: Function Call
-
+    ? Strings, booleans, variables, numbeers and null
+    ? echo
+    ? conditional
+    ? loops
+    ? define function
+    ? function call
+    ? comments
 """
 
 bashGrammar = """
@@ -21,6 +24,9 @@ bashGrammar = """
         | "echo" "$"var -> printvar
         | conditional
         | loop
+        | definefunction
+        | callfuncction
+        | return
 
     //Definition of an arithmeticoperation
     ?arithmeticoperation: arithmeticoperationatom
@@ -47,9 +53,24 @@ bashGrammar = """
     ?for: "for" var "in" "$"var "do" loopinstruction LOOPEND
         | "for" var "in" "{"number".."number"}" "do" loopinstruction LOOPEND    
 
+    //Definition of while loop
     ?while: "while" "["? condition "]"?" "do" loopinstruction LOOPEND
 
-    ?until: "until" "["? condition "]"?" "do" loopinstruction LOOPEND   
+    //Definition of until loop
+    ?until: "until" "["? condition "]"?" "do" loopinstruction LOOPEND  
+
+    //Definition of define function
+    ?definefunction: var "("?")"? "{" functioninstruction "}" -> createfunction
+        | "function" var "("?")"? "{" functioninstruction "}" -> createfunction
+
+    //Definetion of a call of function
+    ?callfunction: var -> callfunction  
+
+    //Definition of return
+    ?return: string
+        | number
+        | var
+        | boolean
 
     //Definition of a condition
     ?condition: "$"var compare "$"var
@@ -75,6 +96,10 @@ bashGrammar = """
         |  /[^(LOOPEND)]/* 
 
     LOOPEND: "done"       
+
+    //Define a function instruction
+    ?functioninstruction: exp*
+        | /[^}]/*
 
 
     //Definition of an instruction
@@ -104,8 +129,22 @@ bashGrammar = """
     ?number: /\d+(\.\d)?/
         | /\d+(\.\d+)/
 
+    //Definition of null
+    ?null: /""/    
+
     //Ignore spaces,tabs and brakelines
     %ignore /\s/
+
+    //Define comment comments
+    COMMENT: "#" /[^\\n]/* 
+        | OPEN /[^(CLOSE)]/* CLOSE
+
+    OPEN: ":" "'" "comment"
+
+    CLOSE: "'" "uncomment"    
+
+    //ignore comments
+    %ignore COMMENT  
 
 
 
