@@ -11,14 +11,14 @@ var test2 = "adios";
     ejemplo
 */
 
-console.log(test2.length);
-console.log(test + test2);
-console.log(carName.length);
-console.log(4);
-console.log(2+6);
-console.log(n);
-console.log(prueba + n);
-console.log("string" + n);
+//console.log(test2.length);
+//console.log(test + test2);
+//console.log(carName.length);
+//console.log(4);
+//console.log(2+6);
+//console.log(n);
+//console.log(prueba + n);
+//console.log("string" + n);
 
 function factorial(n)
 {

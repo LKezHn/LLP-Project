@@ -26,8 +26,7 @@ javascriptGrammar = """
     ?start: exp+ function+ exp+
         | exp+
 
-    ?exp: cond
-        | varkeyword identifier opequals string eos -> assignvar
+    ?exp: varkeyword identifier opequals string eos -> assignvar
         | varkeyword identifier opequals string opsum identifier eos -> assignvaralt
         | varkeyword identifier opequals arithmeticoperation eos -> assignvar
         | varkeyword identifier opequals bool eos -> assignvar 
@@ -44,14 +43,16 @@ javascriptGrammar = """
 
         | consoleerror leftpar string rightpar eos -> print_error
 
-        | identifier leftpar (int | float) "," (int | float) rightpar eos 
-        | identifier leftpar (int | float) "," identifier rightpar eos
-        | identifier leftpar identifier "," (int | float) rightpar eos
-        | identifier leftpar identifier "," identifier rightpar eos
+        | identifier leftpar (int | float) "," (int | float) rightpar eos -> runfunc
+        | identifier leftpar (int | float) "," identifier rightpar eos -> runfunc
+        | identifier leftpar identifier "," (int | float) rightpar eos -> runfunc
+        | identifier leftpar identifier "," identifier rightpar eos -> runfunc
         | identifier leftpar identifier rightpar eos -> exefunc
         | identifier leftpar (int | float) rightpar eos
 
         | consolelog leftpar identifier "." "length" rightpar eos -> length
+
+        | cond
 
     ?function: funkeyword identifier leftpar identifier rightpar leftbrace infunc+ rightbrace -> createfunc
         | funkeyword identifier leftpar identifier "," identifier rightpar leftbrace infunc+ rightbrace -> createfuncs
@@ -61,7 +62,11 @@ javascriptGrammar = """
         | exp+ returnkeyword identifier opmult identifier leftpar arithmeticoperation rightpar eos 
         | exp+
         
-    ?cond: ifkeyword leftpar identifier opgrtrthan identifier rightpar returnkeyword (int | float) eos -> ifcondgnames
+    ?cond: ifkeyword leftpar identifier opgrtrthan identifier rightpar leftbrace (exp+) rightbrace "else" leftbrace (exp+) rightbrace -> test
+        | ifkeyword leftpar identifier oplessthan identifier rightpar leftbrace (exp+) rightbrace "else" leftbrace (exp+) rightbrace
+        | ifkeyword leftpar identifier opcompare identifier rightpar leftbrace (exp+) rightbrace "else" leftbrace (exp+) rightbrace
+
+        | ifkeyword leftpar identifier opgrtrthan identifier rightpar returnkeyword (int | float) eos -> ifcondgnames
         | ifkeyword leftpar identifier opgrtrthan identifier rightpar returnkeyword identifier eos -> ifcondgnames
         | ifkeyword leftpar identifier opgrtrthan (int | float) rightpar returnkeyword (int | float) eos -> ifcondg
         | ifkeyword leftpar identifier opgrtrthan (int | float) rightpar returnkeyword identifier eos -> ifcondg
@@ -76,10 +81,6 @@ javascriptGrammar = """
         | ifkeyword leftpar identifier oplessthan (int | float) rightpar returnkeyword (int | float) eos -> ifcondl
         | ifkeyword leftpar identifier oplessthan (int | float) rightpar returnkeyword identifier eos -> ifcondl
 
-        | ifkeyword leftpar identifier opgrtrthan identifier rightpar leftbrace (exp+) rightbrace "else" leftbrace (exp+) rightbrace 
-        | ifkeyword leftpar identifier oplessthan identifier rightpar leftbrace (exp+) rightbrace "else" leftbrace (exp+) rightbrace
-        | ifkeyword leftpar identifier opcompare identifier rightpar leftbrace (exp+) rightbrace "else" leftbrace (exp+) rightbrace
-
     ?ciclicoperation: whilekeyword leftpar identifier ">" identifier rightpar leftbrace exp+ rightbrace
         | whilekeyword leftpar identifier opgrtrthan (int | float) rightpar leftbrace exp+ rightbrace
         | whilekeyword leftpar identifier oplessthan identifier rightpar leftbrace exp+ rightbrace
@@ -90,6 +91,9 @@ javascriptGrammar = """
         | whilekeyword leftpar identifier oplessthanequal (int | float) rightpar leftbrace exp+ rightbrace
         | whilekeyword leftpar identifier opcompare identifier rightpar leftbrace exp+ rightbrace
         | whilekeyword leftpar identifier opcompare (int | float) rightpar leftbrace exp+ rightbrace
+
+        | forkeyword leftpar identifier opequals int eos identifier opgrtrthan (int | float) eos leftbrace exp+ rightbrace
+        | forkeyword leftpar identifier opequals int eos (int | float) opgrtrthan (int | float) eos leftbrace exp+ rightbrace
 
     ?arithmeticoperation: arithmeticoperationatom
 
@@ -113,43 +117,45 @@ javascriptGrammar = """
         | "false" -> boolf
         | "null" -> booln
 
-    !opsum: "+"
+    !forkeyword: "for" -> forw
 
-    !opsub: "-"
+    !opsum: "+" -> opsum
 
-    !opmult: "*"
+    !opsub: "-" -> opsub
 
-    !opdiv: "/"
+    !opmult: "*" -> opmult
 
-    !funkeyword: "function"
+    !opdiv: "/" -> opdiv
 
-    !returnkeyword: "return"
+    !funkeyword: "function" -> funcw
 
-    !whilekeyword: "while"
+    !returnkeyword: "return" -> retw
 
-    !ifkeyword: "if"
+    !whilekeyword: "while" -> whilew
 
-    !varkeyword: "var"
+    !ifkeyword: "if" -> ifw
 
-    !consolelog: "console" "." "log"
+    !varkeyword: "var" -> varkeyword
+
+    !consolelog: "console" "." "log" -> consolelog
 
     !consoleerror: "console" "." "error"
 
-    !leftpar: "("
+    !leftpar: "(" -> leftpar
 
-    !rightpar: ")"
+    !rightpar: ")" -> rightpar
 
-    !leftbrace: "{"
+    !leftbrace: "{" -> leftbrace
 
-    !rightbrace: "}"
+    !rightbrace: "}" -> rightbrace
 
-    !opequals: "="
+    !opequals: "=" -> opequals
 
-    !opcompare: "=="
+    !opcompare: "==" -> opcompare
 
-    !opgrtrthan: ">"
+    !opgrtrthan: ">" -> opgrtrthan
 
-    !oplessthan: "<"
+    !oplessthan: "<" -> oplessthan
 
     !opgrtrthanequal: ">="
 
