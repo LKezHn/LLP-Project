@@ -64,7 +64,18 @@ bashGrammar = """
         | "function" var "("?")"? "{" functioninstruction "}" -> createfunction
 
     //Definetion of a call of function
-    ?callfunction: var -> callfunction  
+    ?callfunction: var -> callfunction
+        | var params
+
+    //Define params
+    ?params: string
+        | number
+        | var
+        | callfunction
+        | string  params
+        | number  params
+        | var  params
+        | callfunction  params      
 
     //Definition of return
     ?return: string
