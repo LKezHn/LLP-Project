@@ -25,7 +25,7 @@ bashGrammar = """
         | conditional
         | loop
         | definefunction
-        | callfuncction
+        | callfunction
         | return
 
     //Definition of an arithmeticoperation
@@ -37,7 +37,7 @@ bashGrammar = """
         | arithmeticoperation"%"arithmeticoperationatom -> mod
 
     //Definition of an arithmeticoperationatom
-    ?aritmeticoperationatom: "$"var -> get var
+    ?arithmeticoperationatom: "$"var -> getvar
         | number 
         | "-"arithmeticoperation
 
@@ -54,10 +54,10 @@ bashGrammar = """
         | "for" var "in" "{"number".."number"}" "do" loopinstruction LOOPEND    
 
     //Definition of while loop
-    ?while: "while" "["? condition "]"?" "do" loopinstruction LOOPEND
+    ?while: "while" "["? condition "]"? "do" loopinstruction LOOPEND
 
     //Definition of until loop
-    ?until: "until" "["? condition "]"?" "do" loopinstruction LOOPEND  
+    ?until: "until" "["? condition "]"? "do" loopinstruction LOOPEND  
 
     //Definition of define function
     ?definefunction: var "("?")"? "{" functioninstruction "}" -> createfunction
@@ -72,10 +72,10 @@ bashGrammar = """
         | number
         | var
         | callfunction
-        | string  params
-        | number  params
-        | var  params
-        | callfunction  params      
+        | string params
+        | number params
+        | var params
+        | callfunction params      
 
     //Definition of return
     ?return: string
@@ -120,14 +120,14 @@ bashGrammar = """
     END: "fi"           
 
     //Definition of a variable
-    ?var: /[a-zA-Z][\w_]/
+    ?var: /[a-zA-Z][\w_]*/
         | /[A-Z][A-Z0-9]*/
 
     //Definition of a value
     ?value: string
-        |boolean
-        |number
-        |null
+        | boolean
+        | number
+        | null
 
     //Definition of a string
     ?string: /"[^"]*"/
@@ -156,9 +156,6 @@ bashGrammar = """
 
     //ignore comments
     %ignore COMMENT  
-
-
-
 
 """
 
