@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import re
-
 from ..lark import Transformer, v_args, Tree
+
+
 @v_args(inline=True)
 class RecognizerSemantic(Transformer):
     def __init__(self):
@@ -31,23 +32,23 @@ class RecognizerSemantic(Transformer):
 
     def sum(self,A,B):
 
-        return float(A) + float(B) 
+        pass#return float(A) + float(B) 
 
     def sub(self,A,B):
 
-        return float(A) + float(B)
+        pass#return float(A) + float(B)
 
     def mul(self,A,B):
 
-        return float(A) * float(B)
+        pass#return float(A) * float(B)
 
     def div(self,A,B):
 
-        return float(A) / float(B)
+        pass#return float(A) / float(B)
 
     def mod(self,A,B):
 
-        return float(A) % float(B)
+        pass#return float(A) % float(B)
 
     def assignvar(self,name,value):
 
@@ -55,15 +56,14 @@ class RecognizerSemantic(Transformer):
 
     def getvar(self,name):
 
-        return self.variables[name]   
+        pass#return self.variables[name]   
 
-     def print(self,param):
-
-        print("%s" % self.cleanParam(param))
+    def print(self,param):
+        pass#print("%s" % self.cleanParam(param))
 
     def printvar(self,name):
 
-        print("%s" % self.getvar(name))
+        pass#print("%s" % self.getvar(name))
 
     def cleanParam(self,param):
 
