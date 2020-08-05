@@ -10,7 +10,7 @@
     ? Operaciones aritméticas
     ? Definicion de funcion
     ? Gramatica de llamado a funcion
-    ?Concatenacion en strings.
+    ? Concatenacion en strings.
 """
 
 
