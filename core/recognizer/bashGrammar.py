@@ -22,6 +22,7 @@ bashGrammar = """
         | "let" var"="arithmeticoperation -> assignvar
         | "echo" string -> print
         | "echo" "$"var -> printvar
+        | "echo" var
         | conditional
         | loop
         | definefunction
@@ -50,8 +51,8 @@ bashGrammar = """
         | until
 
     //Definition of for
-    ?for: "for" var "in" "$"var "do" loopinstruction LOOPEND
-        | "for" var "in" "{"number".."number"}" "do" loopinstruction LOOPEND    
+    ?for: "for" var "in" forcondition "do" loopinstruction LOOPEND
+            
 
     //Definition of while loop
     ?while: "while" "["? condition "]"? "do" loopinstruction LOOPEND
@@ -60,32 +61,37 @@ bashGrammar = """
     ?until: "until" "["? condition "]"? "do" loopinstruction LOOPEND  
 
     //Definition of define function
-    ?definefunction: var "("?")"? "{" functioninstruction "}" -> createfunction
-        | "function" var "("?")"? "{" functioninstruction "}" -> createfunction
+    ?definefunction: var "("?")"? "{" functioninstruction "}"
+        | "function" var "("?")"? "{" functioninstruction "}"
 
     //Definetion of a call of function
-    ?callfunction: var -> callfunction
+    ?callfunction: var
         | var params
 
     //Define params
     ?params: string
         | number
-        | var
-        | callfunction
-        | string params
-        | number params
-        | var params
-        | callfunction params      
+        | "$"var
+           
 
     //Definition of return
     ?return: string
         | number
-        | var
+        | "$"var
         | boolean
+
+    //Define forcondition
+    ?forcondition: "$"var
+        | number
+        | number forcondition
+        | "{"number".."number"}"    
 
     //Definition of a condition
     ?condition: "$"var compare "$"var
         | "$"var compare number
+        | "$1" compare number
+        | "$1" equals number
+        | "$"var equals number
         | "$"var equals boolean
         | "$"var equals string
         | string equals string
@@ -100,7 +106,8 @@ bashGrammar = """
         | "-ne"
 
     //Definition of equals
-    ?equals: "-eq"      
+    ?equals: "-eq" 
+        | "=="     
 
     //Definition of loopinstruction
     ?loopinstruction: exp*
@@ -125,6 +132,7 @@ bashGrammar = """
 
     //Definition of a value
     ?value: string
+        | var
         | boolean
         | number
         | null
