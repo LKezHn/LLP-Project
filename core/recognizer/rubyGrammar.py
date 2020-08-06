@@ -23,7 +23,7 @@ rubyGrammar = """
         | var "=" NONE -> assignvar
         | var "=" arithmeticoperation 
         | "puts" "("? string ")"? 
-        | "puts" "("? string ")"? "%" "["? params "]"? 
+        | "puts" "("? string "%" "["? params "]"? ")"? 
         | "puts" "("? var ")"? 
         | arithmeticoperation
 	    | conditional

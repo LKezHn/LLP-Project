@@ -41,9 +41,9 @@ class LanguageRecognizer:
         if self.analyze(rubyGrammar, content):
            self.printResults("Ruby",filename, content)
         #! Aqui seria el analisis de Bash, y si no es ninguno lanza la excepcion
-        if self.analyze(bashGrammar, content):
+        elif self.analyze(bashGrammar, content):
            self.printResults("Bash",filename, content)
-            # Imporimir los resultados
+            # Imprimir los resultados
         else:
             raise Exception("El archivo no pertenece al lenguaje Ruby ni al lenguaje Bash") #*Debug
 
