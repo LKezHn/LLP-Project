@@ -23,10 +23,11 @@ bashGrammar = """
         | "echo" string -> print
         | "echo" "$"var -> printvar
         | "echo" var
+        | "echo" "$""("?")"?
         | conditional
         | loop
         | definefunction
-        | callfunction
+        | functioncall
         | return
 
     //Definition of an arithmeticoperation
@@ -65,7 +66,7 @@ bashGrammar = """
         | "function" var "("?")"? "{" functioninstruction "}"
 
     //Definetion of a call of function
-    ?callfunction: var
+    ?functioncall: var
         | var params
 
     //Define params
