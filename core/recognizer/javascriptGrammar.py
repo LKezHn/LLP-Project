@@ -20,7 +20,7 @@
 
 javascriptGrammar = """
 
-    ?start: exp+ function+ exp+
+    ?start: exp+ function+ exp+ function+ exp+
         | function+
         | exp+
 
@@ -48,9 +48,13 @@ javascriptGrammar = """
         | identifier leftpar identifier rightpar eos -> funcexists
         | identifier leftpar (int | float) rightpar eos
 
-        | consolelog leftpar identifier "." "length" rightpar eos -> length
+        | length
 
         | cond
+
+        | whileoperation
+
+        | foroperation
 
     ?function: funkeyword identifier leftpar identifier rightpar leftbrace infunc* rightbrace -> createfunc
         | funkeyword identifier leftpar identifier "," identifier rightpar leftbrace infunc* rightbrace -> createfunc
@@ -82,6 +86,11 @@ javascriptGrammar = """
         | ifkeyword leftpar identifier oplessthan (int | float) rightpar returnkeyword (int | float) eos -> ifcondl
         | ifkeyword leftpar identifier oplessthan (int | float) rightpar returnkeyword identifier eos -> ifcondl
 
+    ?increment: identifier "+" "+" ";" 
+        | identifier "+" "+" 
+
+    ?length: consolelog leftpar identifier "." "length" rightpar eos -> length
+
     ?inif: consolelog leftpar string rightpar eos -> consolelog
         | consoleerror leftpar string rightpar eos -> consoleerror
         | consolelog leftpar identifier "." "length" rightpar eos -> consoleloglength
@@ -93,19 +102,15 @@ javascriptGrammar = """
         | consolelog leftpar arithmeticoperation rightpar eos -> consolelog
         | consolelog leftpar arithmeticoperation "+" arithmeticoperation rightpar eos -> consolelogatom
 
-    ?ciclicoperation: whilekeyword leftpar identifier ">" identifier rightpar leftbrace exp+ rightbrace
-        | whilekeyword leftpar identifier opgrtrthan (int | float) rightpar leftbrace exp+ rightbrace
-        | whilekeyword leftpar identifier oplessthan identifier rightpar leftbrace exp+ rightbrace
-        | whilekeyword leftpar identifier oplessthan (int | float) rightpar leftbrace exp+ rightbrace
-        | whilekeyword leftpar identifier opgrtrthanequal identifier rightpar leftbrace exp+ rightbrace
-        | whilekeyword leftpar identifier opgrtrthanequal (int | float) rightpar leftbrace exp+ rightbrace
-        | whilekeyword leftpar identifier oplessthanequal identifier rightpar leftbrace exp+ rightbrace
-        | whilekeyword leftpar identifier oplessthanequal (int | float) rightpar leftbrace exp+ rightbrace
-        | whilekeyword leftpar identifier opcompare identifier rightpar leftbrace exp+ rightbrace
-        | whilekeyword leftpar identifier opcompare (int | float) rightpar leftbrace exp+ rightbrace
+    ?whileoperation: whilekeyword leftpar identifier opgrtrthan identifier rightpar leftbrace inif* increment rightbrace -> whiles
+        | whilekeyword leftpar identifier opgrtrthan (int | float) rightpar leftbrace inif* increment rightbrace -> whiles
+        | whilekeyword leftpar identifier oplessthan identifier rightpar leftbrace inif* increment rightbrace -> whiles
+        | whilekeyword leftpar identifier oplessthan (int | float) rightpar leftbrace inif* increment rightbrace -> whiles
+        | whilekeyword leftpar identifier opcompare identifier rightpar leftbrace inif* increment rightbrace -> whiles
+        | whilekeyword leftpar identifier opcompare (int | float) rightpar leftbrace inif* increment rightbrace -> whiles
 
-        | forkeyword leftpar identifier opequals int eos identifier opgrtrthan (int | float) eos leftbrace exp+ rightbrace
-        | forkeyword leftpar identifier opequals int eos (int | float) opgrtrthan (int | float) eos leftbrace exp+ rightbrace
+    ?foroperation: forkeyword leftpar identifier opequals (int | float) eos identifier oplessthan (int | float) eos increment rightpar leftbrace inif* rightbrace -> fors
+
 
     ?arithmeticoperation: arithmeticoperationatom
 

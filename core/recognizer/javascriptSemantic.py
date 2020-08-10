@@ -8,7 +8,7 @@ class javascriptSemantic (Transformer):
     def __init__(self):
         self.variables = {}
         self.functions = {}
-        self.test = {}
+        self.temp = None
 
     def sum (self,param):
         new,new2 = int(param[0]), int(param[2]) 
@@ -83,7 +83,7 @@ class javascriptSemantic (Transformer):
             print("%s %s" % (self.cleanParam(self.getvar(param[2])),self.cleanParam(self.getvar(param[3]))))
         else:
             print(int(self.getvar(param[2]))+int(self.getvar(param[3])))
-    
+
     #Limpia las ' "" ' y " '' " a la hora de impresión.
     def cleanParam(self, param):
         if re.match(r"^((\"[^\"]*\")|('[^']*'))$", param):
@@ -107,6 +107,7 @@ class javascriptSemantic (Transformer):
         if param[0] in self.functions:
             try:
                 new = int(param[3])
+                self.temp = new
                 if(isinstance(int(self.getvar(param[2])),int) and isinstance(new,int)):
                     self.functions[param[0]] = int(self.getvar(param[2])), new
             except:
@@ -117,13 +118,21 @@ class javascriptSemantic (Transformer):
 
     def ifelse(self,param):
         for i in range (len(param)):
-            print(param[i])
             if(param[i] == '>'):
-                pass
+                if(int(self.getvar(param[2])) > int(self.getvar(param[4]))):
+                    print(param[7])
+                else:
+                    print(param[11])
             elif(param[i] == '<'):
-                pass
+                if(int(self.getvar(param[2])) < int(self.getvar(param[4]))):
+                    print(param[7])
+                else:
+                    print(param[11])
             elif(param[i] == '=='):
-                pass
+                if(int(self.getvar(param[2])) == int(self.getvar(param[4]))):
+                    print(param[7])
+                else:
+                    print(param[11])
 
     #Para '>'
     def ifcondgnames(self, param):
@@ -172,6 +181,57 @@ class javascriptSemantic (Transformer):
                 print(param[7])
             else:
                 pass
+
+    def whiles(self,param):
+        increment = int(self.getvar(param[2]))
+        for i in range (len(param)):
+            try:
+                if(isinstance(int(self.getvar(param[2])),int) and param[3] == '>' and isinstance(int(param[4]),int)):
+
+                    while(increment > int(param[4])):
+                        print(param[7])
+                        increment += 1
+
+                elif(isinstance(int(self.getvar(param[2])),int) and param[3] == '<' and isinstance(int(param[4]),int)):
+                
+                    while(increment < int(param[4])):
+                        print(param[7])
+                        increment += 1
+
+                elif(isinstance(int(self.getvar(param[2])),int) and param[3] == '==' and isinstance(int(param[4]),int)):
+                
+                    while(increment < int(param[4])):
+                        print(param[7])
+                        increment += 1
+            except:
+                pass
+
+            try:
+                if(isinstance(int(self.getvar(param[2])),int) and param[3] == '>' and isinstance(int(self.getvar(param[4])),int)):
+
+                    while(increment > int(self.getvar(param[4]))):
+                        print(param[7])
+                        increment += 1
+
+                elif(isinstance(int(self.getvar(param[2])),int) and param[3] == '<' and isinstance(int(self.getvar(param[4])),int)):
+                
+                    while(increment < int(self.getvar(param[4]))):
+                        print(param[7])
+                        increment += 1
+
+                elif(isinstance(int(self.getvar(param[2])),int) and param[3] == '==' and isinstance(int(self.getvar(param[4])),int)):
+                
+                    while(increment < int(self.getvar(param[4]))):
+                        print(param[7])
+                        increment += 1
+            except:
+                pass
+
+    def fors(self,param):
+        increment = int(self.getvar(param[2]))
+        for increment in range(int(param[8])):
+            print(param[13])
+
 
     def returnrecur(self, param):
         #print(param[3],param[7])
