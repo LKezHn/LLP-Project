@@ -117,22 +117,52 @@ class javascriptSemantic (Transformer):
 
 
     def ifelse(self,param):
+        count = 1
         for i in range (len(param)):
             if(param[i] == '>'):
                 if(int(self.getvar(param[2])) > int(self.getvar(param[4]))):
-                    print(param[7])
+                    while param[6+count] != '}':
+                        print(param[6+count]) 
+                        count += 1
                 else:
-                    print(param[11])
+                    try:
+                        while param[18+count] != '}':
+                            print(param[18+count]) 
+                            count += 1
+                    except:
+                        while param[10+count] != '}':
+                            print(param[10+count]) 
+                            count += 1
+
             elif(param[i] == '<'):
                 if(int(self.getvar(param[2])) < int(self.getvar(param[4]))):
-                    print(param[7])
+                    while param[6+count] != '}':
+                        print(param[6+count]) 
+                        count += 1
                 else:
-                    print(param[11])
+                    try:
+                        while param[19+count] != '}':
+                            print(param[19+count]) 
+                            count += 1
+                    except:
+                        while param[10+count] != '}':
+                            print(param[10+count]) 
+                            count += 1
+
             elif(param[i] == '=='):
                 if(int(self.getvar(param[2])) == int(self.getvar(param[4]))):
-                    print(param[7])
+                    while param[6+count] != '}':
+                        print(param[6+count]) 
+                        count += 1
                 else:
-                    print(param[11])
+                    try:
+                        while param[18+count] != '}':
+                            print(param[18+count]) 
+                            count += 1
+                    except:
+                        while param[10+count] != '}':
+                            print(param[10+count]) 
+                            count += 1
 
     #Para '>'
     def ifcondgnames(self, param):
@@ -187,7 +217,6 @@ class javascriptSemantic (Transformer):
         for i in range (len(param)):
             try:
                 if(isinstance(int(self.getvar(param[2])),int) and param[3] == '>' and isinstance(int(param[4]),int)):
-
                     while(increment > int(param[4])):
                         print(param[7])
                         increment += 1
@@ -250,12 +279,38 @@ class javascriptSemantic (Transformer):
         return param[0]
 
     def consolelogfunc(self,param):
+        print(self.cleanParam(param[2]))
+
+    def consoleloglengthfunc(self,param):
+        if(self.getvar(param[2]) is None):
+            print('Null has no length attribute.')
+        elif(isinstance(self.getvar(param[2]),bool)):
+            print('Boolean has no length attribute.')
+        else:
+            print(len(self.cleanParam(self.getvar(param[2]))))
+
+    def consolelogatomfunc(self,param):
+        print(int(param[2])+int(param[3]))
+
+    def consolelogsifunc(self,param):
+        print("%s %s" % (self.getvar(param[4]),self.cleanParam(param[2])))
+
+    def consolelogidentfunc(self,param):
+        print(self.cleanParam(self.getvar(param[2])))
+
+    def consolelogident_altfunc(self, param):
+        if(isinstance(self.getvar(param[2]),str) and isinstance(self.getvar(param[3]),str)):
+            print("%s %s" % (self.cleanParam(self.getvar(param[2])),self.cleanParam(self.getvar(param[3]))))
+        else:
+            print(int(self.getvar(param[2]))+int(self.getvar(param[3])))
+
+    def consoleerrorfunc(self,param):
+        print(self.cleanParam(param[2]))
+
+    def consolelogcond(self,param):
         return self.cleanParam(param[2])
 
-    def consolelog(self,param):
-        return self.cleanParam(param[2])
-
-    def consoleloglength(self,param):
+    def consoleloglengthcond(self,param):
         if(self.getvar(param[2]) is None):
             return('Null has no length attribute.')
         elif(isinstance(self.getvar(param[2]),bool)):
@@ -263,22 +318,22 @@ class javascriptSemantic (Transformer):
         else:
             return(len(self.cleanParam(self.getvar(param[2]))))
 
-    def consolelogatom(self,param):
+    def consolelogatomcond(self,param):
         return (int(param[2])+int(param[3]))
 
-    def consolelogsi(self,param):
+    def consolelogsicond(self,param):
         return("%s %s" % (self.getvar(param[4]),self.cleanParam(param[2])))
 
-    def consolelogident(self,param):
+    def consolelogidentcond(self,param):
         return self.cleanParam(self.getvar(param[2]))
 
-    def consolelogident_alt(self, param):
+    def consolelogident_altcond(self, param):
         if(isinstance(self.getvar(param[2]),str) and isinstance(self.getvar(param[3]),str)):
             return("%s %s" % (self.cleanParam(self.getvar(param[2])),self.cleanParam(self.getvar(param[3]))))
         else:
             return(int(self.getvar(param[2]))+int(self.getvar(param[3])))
 
-    def consoleerror(self,param):
+    def consoleerrorcond(self,param):
         return self.cleanParam(param[2])
 
     def opsum(self,param):

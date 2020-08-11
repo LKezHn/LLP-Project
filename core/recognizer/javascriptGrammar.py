@@ -61,11 +61,20 @@ javascriptGrammar = """
         | funkeyword identifier leftpar rightpar leftbrace infunc* rightbrace -> createfunc
 
     ?infuncexp: cond
-        | consolelog leftpar string rightpar eos -> consolelog
+        | consolelog leftpar string rightpar eos -> consolelogfunc
+        | consoleerror leftpar string rightpar eos -> consoleerrorfunc
+        | consolelog leftpar identifier "." "length" rightpar eos -> consoleloglengthfunc
+        | consolelog leftpar string opsum identifier rightpar eos -> consolelogsifunc
 
-    ?infunc: infuncexp+ returnkeyword infuncexp eos 
+        | consolelog leftpar identifier rightpar eos -> consolelogidentfunc
+        | consolelog leftpar identifier "+" identifier rightpar eos -> consolelogident_altfunc
+
+        | consolelog leftpar arithmeticoperation rightpar eos -> consolelogfunc
+        | consolelog leftpar arithmeticoperation "+" arithmeticoperation rightpar eos -> consolelogatomfunc
+
+    ?infunc: infuncexp+ 
+        | infuncexp+ returnkeyword infuncexp eos 
         | infuncexp+ returnkeyword identifier opmult identifier leftpar arithmeticoperation rightpar eos -> returnrecur
-        | infuncexp+
         
     ?cond: (ifkeyword leftpar identifier opgrtrthan identifier rightpar leftbrace inif* rightbrace elsekeyword leftbrace inif* rightbrace) -> ifelse
         |  (ifkeyword leftpar identifier oplessthan identifier rightpar leftbrace inif* rightbrace elsekeyword leftbrace inif* rightbrace) -> ifelse
@@ -91,16 +100,17 @@ javascriptGrammar = """
 
     ?length: consolelog leftpar identifier "." "length" rightpar eos -> length
 
-    ?inif: consolelog leftpar string rightpar eos -> consolelog
-        | consoleerror leftpar string rightpar eos -> consoleerror
-        | consolelog leftpar identifier "." "length" rightpar eos -> consoleloglength
-        | consolelog leftpar string opsum identifier rightpar eos -> consolelogsi
+    ?inif: consolelog leftpar string rightpar eos -> consolelogcond
+        | consoleerror leftpar string rightpar eos -> consoleerrorcond
+        | consolelog leftpar identifier "." "length" rightpar eos -> consoleloglengthcond
+        | consolelog leftpar string opsum identifier rightpar eos -> consolelogsicond
 
-        | consolelog leftpar identifier rightpar eos -> consolelogident
-        | consolelog leftpar identifier "+" identifier rightpar eos -> consolelogident_alt
+        | consolelog leftpar identifier rightpar eos -> consolelogidentcond
+        | consolelog leftpar identifier "+" identifier rightpar eos -> consolelogident_altcond
 
-        | consolelog leftpar arithmeticoperation rightpar eos -> consolelog
-        | consolelog leftpar arithmeticoperation "+" arithmeticoperation rightpar eos -> consolelogatom
+        | consolelog leftpar arithmeticoperation rightpar eos -> consolelogcond
+        | consolelog leftpar arithmeticoperation "+" arithmeticoperation rightpar eos -> consolelogatomcond
+        | cond
 
     ?whileoperation: whilekeyword leftpar identifier opgrtrthan identifier rightpar leftbrace inif* increment rightbrace -> whiles
         | whilekeyword leftpar identifier opgrtrthan (int | float) rightpar leftbrace inif* increment rightbrace -> whiles
