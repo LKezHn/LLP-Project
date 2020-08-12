@@ -116,7 +116,7 @@ class javascriptSemantic (Transformer):
                         print(key,value)
 
                     #if(isinstance(int(self.getvar(param[2])),int) and isinstance(param2,int)):
-                    #self.functions[param[0]] = int(self.getvar(param[2])), new
+                        #self.functions[param[0]] = int(self.getvar(param[2])), new
 
             except:
                 pass
