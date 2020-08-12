@@ -3,6 +3,7 @@
 from ..lark import Lark, Transformer
 from .javascriptSemantic import javascriptSemantic
 from .rubyGrammar import *
+from .bashGrammar import *
 from .javascriptGrammar import *
 from .RecognizerSemantic import RecognizerSemantic
 
@@ -12,8 +13,6 @@ class LanguageRecognizer:
             #! La idea es que si al terminar de analizar los dos atributos son falsos entonces retorne que el archivo no pertenece a ninguno.
             #! Y cuando uno de los dos sea verdadero entonces ese es el lenguaje detectado.
         """
-        self.isRuby : bool = True
-        self.isBash : bool = True
         self.isJavascript : bool = True
         self.error = None
 
@@ -37,28 +36,34 @@ class LanguageRecognizer:
     def recognize(self,filename,content):
         
         # TODO: Hacer las funciones de procesamiento caracter a caracter para detectar el lenguaje.
-        parser = Lark(rubyGrammar, parser="lalr",transformer = RecognizerSemantic())
+            #self.error = e
+
+        if self.analyze(rubyGrammar, content):
+           self.printResults("Ruby",filename, content)
+        #! Aqui seria el analisis de Bash, y si no es ninguno lanza la excepcion
+        elif self.analyze(bashGrammar, content):
+           self.printResults("Bash",filename, content)
+            # Imprimir los resultados
+        else:
+            raise Exception("El archivo no pertenece al lenguaje Ruby ni al lenguaje Bash") #*Debug
+
+    def printResults(self, language: str, filename : str, content : str) -> str:
+        print("Resultados")
+        print("*"*40)
+        print("\tLenguaje: %s" % language)
+        print("*"*40)
+        print("\tNombre de archivo: %s" % filename)
+        print("*"*40)
+        print(content)
+        print("*"*40)
+
+    def analyze(self, grammar : str, content : str):
+        parser = Lark(grammar, parser="lalr",transformer = RecognizerSemantic())
         language = parser.parse
         sample = content
 
         try:
             language(sample)
         except Exception as e:
-            self.isRuby = False
-            self.error = e
-
-        if self.isRuby:
-            self.printResults("Ruby",filename, content)
-        #! Aqui seria el analisis de Bash, y si no es ninguno lanza la excepcion
-        else:
-            raise Exception(self.error) #*Debug
-
-    def printResults(self, language: str, filename : str, content : str) -> str:
-        print("Resultados")
-        print("-"*40)
-        print("\tLenguaje: %s" % language)
-        print("-"*40)
-        print("\tNombre de archivo: %s" % filename)
-        print("-"*40)
-        print(content)
-        print("-"*40)
+            return False
+        return True

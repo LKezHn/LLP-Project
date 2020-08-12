@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import re
 
 class Table:
     def __init__(self): pass
@@ -19,6 +18,7 @@ class Table:
             print("{1} {0:36s} {1}".format("Opción Elegida:","*"))
             print("{1} {0:31s} {1}".format("\t%s" % param,"*"))
             print("{1} {0:36s} {1}".format("","*"))
+
             print("*"*40)
 
     def symbolTable(self,text):
@@ -64,3 +64,6 @@ class Table:
                 else:
                     pass
         return result
+
+            print("*"*40)
+

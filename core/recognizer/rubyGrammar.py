@@ -10,7 +10,7 @@
     ? Operaciones aritméticas
     ? Definicion de funcion
     ? Gramatica de llamado a funcion
-    ?Concatenacion en strings.
+    ? Concatenacion en strings.
 """
 
 
@@ -23,7 +23,7 @@ rubyGrammar = """
         | var "=" NONE -> assignvar
         | var "=" arithmeticoperation 
         | "puts" "("? string ")"? 
-        | "puts" "("? string ")"? "%" "["? params "]"? 
+        | "puts" "("? string "%" "["? params "]"? ")"? 
         | "puts" "("? var ")"? 
         | arithmeticoperation
 	    | conditional

@@ -26,17 +26,7 @@ else:
         filename = sys.argv[2]
         try:
             f = open(filename,"r")
-            text = f.read()
-            
-            run = (Table()).symbolTable(text)
-            headers = ["Lexeme","Token"]
-            print("\n")
-            print("*"*40)
-            print("Tabla de Símbolos: ")
-            print("*"*40)
-            print("%s"%tabulate(run,headers,tablefmt="psql"))
-            
-            (LanguageRecognizer()).recognizeJS(filename,text)
+            (LanguageRecognizer()).recognizeJS(filename,f.read())
         except Exception as e:
             quit(errorMessage % e)
     else:
