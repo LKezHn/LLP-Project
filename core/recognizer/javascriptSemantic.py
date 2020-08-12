@@ -115,6 +115,7 @@ class javascriptSemantic (Transformer):
                     for key, value in self.variables.items():
                         print(key,value)
 
+                    #si es variable y luego numero.
                     #if(isinstance(int(self.getvar(param[2])),int) and isinstance(param2,int)):
                         #self.functions[param[0]] = int(self.getvar(param[2])), new
 
