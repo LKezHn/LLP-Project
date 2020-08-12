@@ -56,8 +56,8 @@ javascriptGrammar = """
 
         | foroperation
 
-    ?function: funkeyword identifier leftpar identifier rightpar leftbrace infunc* rightbrace -> createfunc
-        | funkeyword identifier leftpar identifier "," identifier rightpar leftbrace infunc* rightbrace -> createfunc
+    ?function: funkeyword identifier leftpar paramidentifier rightpar leftbrace infunc* rightbrace -> createfunc
+        | funkeyword identifier leftpar paramidentifier "," paramidentifier rightpar leftbrace infunc* rightbrace -> createfunc
         | funkeyword identifier leftpar rightpar leftbrace infunc* rightbrace -> createfunc
 
     ?infuncexp: cond
@@ -94,6 +94,7 @@ javascriptGrammar = """
         | ifkeyword leftpar identifier oplessthan identifier rightpar returnkeyword identifier eos -> ifcondlnames
         | ifkeyword leftpar identifier oplessthan (int | float) rightpar returnkeyword (int | float) eos -> ifcondl
         | ifkeyword leftpar identifier oplessthan (int | float) rightpar returnkeyword identifier eos -> ifcondl
+        
 
     ?increment: identifier "+" "+" ";" 
         | identifier "+" "+" 
@@ -139,6 +140,8 @@ javascriptGrammar = """
         | /'[^']*'/
 
     ?identifier: /[a-zA-Z]\w*/
+
+    ?paramidentifier: /[a-zA-Z]\w*/ 
 
     !bool: "true" -> boolt
         | "false" -> boolf

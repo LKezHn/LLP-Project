@@ -8,7 +8,7 @@ class javascriptSemantic (Transformer):
     def __init__(self):
         self.variables = {}
         self.functions = {}
-        self.temp = None
+        self.paramidentifier = {}
 
     def sum (self,param):
         new,new2 = int(param[0]), int(param[2]) 
@@ -93,23 +93,31 @@ class javascriptSemantic (Transformer):
     def createfunc(self,param): 
         if(len(param) == 8):
             self.functions[param[1]] = param[3]
+            self.variables[param[1]] = param[3]
         elif(len(param) == 9):
             self.functions[param[1]] = param[3],param[4]
+            self.variables[param[1]] = param[3],param[4]
+            #self.variables[param[3]] = None
+            #self.variables[param[4]] = None
         elif(len(param) == 7):
             self.functions[param[1]] = 0
-
-    #Devuelve el nombre de la función.
-    def getfunc(self,param):
-        return self.functions[param[0]]
+            self.variables[param[1]] = 0
 
     #Ejecución de una función.
     def funcexists(self,param):
         if param[0] in self.functions:
             try:
-                new = int(param[3])
-                self.temp = new
-                if(isinstance(int(self.getvar(param[2])),int) and isinstance(new,int)):
-                    self.functions[param[0]] = int(self.getvar(param[2])), new
+                param1 = int(param[2])
+                param2 = int(param[3])
+                if(isinstance(param1,int) and isinstance(param2,int)):
+                    print(self.variables)
+                    
+                    for key, value in self.variables.items():
+                        print(key,value)
+
+                    #if(isinstance(int(self.getvar(param[2])),int) and isinstance(param2,int)):
+                    #self.functions[param[0]] = int(self.getvar(param[2])), new
+
             except:
                 pass
         else:
