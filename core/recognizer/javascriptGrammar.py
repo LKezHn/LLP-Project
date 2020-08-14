@@ -21,9 +21,8 @@
 
 javascriptGrammar = """
 
-    ?start: exp+ function+ exp+ function+ exp+
-        | function+
-        | exp+
+    ?start: exp+ function+ 
+        | exp+ function+ start+
 
     ?exp: varkeyword identifier opequals string eos -> assignvar
         | varkeyword identifier opequals string opsum identifier eos -> assignvaralt
@@ -123,6 +122,9 @@ javascriptGrammar = """
 
     ?foroperation: forkeyword leftpar identifier opequals (int | float) eos identifier oplessthan (int | float) eos increment rightpar leftbrace inif* rightbrace -> fors
 
+    ?identifier: /[a-zA-Z]\w*/
+
+    ?paramidentifier: /[a-zA-Z]\w*/ 
 
     ?arithmeticoperation: arithmeticoperationatom
 
@@ -139,10 +141,6 @@ javascriptGrammar = """
 
     ?string: /"[^"]*"/
         | /'[^']*'/
-
-    ?identifier: /[a-zA-Z]\w*/
-
-    ?paramidentifier: /[a-zA-Z]\w*/ 
 
     !bool: "true" -> boolt
         | "false" -> boolf
@@ -196,7 +194,7 @@ javascriptGrammar = """
 
     !eos: ";" -> eos
 
-    ?float: /\d+(\.\d+)?/
+    ?float: /\d+(\.\d+)/
 
     ?int: /\d+/
 

@@ -93,15 +93,10 @@ class javascriptSemantic (Transformer):
     def createfunc(self,param): 
         if(len(param) == 8):
             self.functions[param[1]] = param[3]
-            self.variables[param[1]] = param[3]
         elif(len(param) == 9):
             self.functions[param[1]] = param[3],param[4]
-            self.variables[param[1]] = param[3],param[4]
-            #self.variables[param[3]] = None
-            #self.variables[param[4]] = None
         elif(len(param) == 7):
             self.functions[param[1]] = 0
-            self.variables[param[1]] = 0
 
     #Ejecución de una función.
     def funcexists(self,param):
@@ -110,68 +105,62 @@ class javascriptSemantic (Transformer):
                 param1 = int(param[2])
                 param2 = int(param[3])
                 if(isinstance(param1,int) and isinstance(param2,int)):
-                    print(self.variables)
-                    
-                    for key, value in self.variables.items():
-                        print(key,value)
-
-                    #si es variable y luego numero.
-                    #if(isinstance(int(self.getvar(param[2])),int) and isinstance(param2,int)):
-                        #self.functions[param[0]] = int(self.getvar(param[2])), new
-
+                    self.assignvarfunc(param1,param2)
             except:
                 pass
         else:
             raise Exception ("La función no existe.")
 
-
     def ifelse(self,param):
         count = 1
-        for i in range (len(param)):
-            if(param[i] == '>'):
-                if(int(self.getvar(param[2])) > int(self.getvar(param[4]))):
-                    while param[6+count] != '}':
-                        print(param[6+count]) 
-                        count += 1
-                else:
-                    try:
-                        while param[18+count] != '}':
-                            print(param[18+count]) 
+        try:
+            for i in range (len(param)):
+                if(param[i] == '>'):
+                    if(int(self.getvar(param[2])) > int(self.getvar(param[4]))):
+                        while param[6+count] != '}':
+                            print(param[6+count]) 
                             count += 1
-                    except:
-                        while param[10+count] != '}':
-                            print(param[10+count]) 
-                            count += 1
+                    else:
+                        try:
+                            while param[18+count] != '}':
+                                print(param[18+count]) 
+                                count += 1
+                        except:
+                            while param[10+count] != '}':
+                                print(param[10+count]) 
+                                count += 1
 
-            elif(param[i] == '<'):
-                if(int(self.getvar(param[2])) < int(self.getvar(param[4]))):
-                    while param[6+count] != '}':
-                        print(param[6+count]) 
-                        count += 1
-                else:
-                    try:
-                        while param[19+count] != '}':
-                            print(param[19+count]) 
+                elif(param[i] == '<'):
+                    if(int(self.getvar(param[2])) < int(self.getvar(param[4]))):
+                        while param[6+count] != '}':
+                            print(param[6+count]) 
                             count += 1
-                    except:
-                        while param[10+count] != '}':
-                            print(param[10+count]) 
-                            count += 1
+                    else:
+                        try:
+                            while param[19+count] != '}':
+                                print(param[19+count]) 
+                                count += 1
+                        except:
+                            while param[10+count] != '}':
+                                print(param[10+count]) 
+                                count += 1
 
-            elif(param[i] == '=='):
-                if(int(self.getvar(param[2])) == int(self.getvar(param[4]))):
-                    while param[6+count] != '}':
-                        print(param[6+count]) 
-                        count += 1
-                else:
-                    try:
-                        while param[18+count] != '}':
-                            print(param[18+count]) 
+                elif(param[i] == '=='):
+                    if(int(self.getvar(param[2])) == int(self.getvar(param[4]))):
+                        while param[6+count] != '}':
+                            print(param[6+count]) 
                             count += 1
-                    except:
-                        while param[10+count] != '}':
-                            print(param[10+count]) 
-                            count += 1
+                    else:
+                        try:
+                            while param[18+count] != '}':
+                                print(param[18+count]) 
+                                count += 1
+                        except:
+                            while param[10+count] != '}':
+                                print(param[10+count]) 
+                                count += 1
+        except:
+            pass
 
     #Para '>'
     def ifcondgnames(self, param):

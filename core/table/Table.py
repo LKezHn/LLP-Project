@@ -65,5 +65,5 @@ class Table:
                     pass
         return result
 
-            print("*"*40)
+        print("*"*40)
 
