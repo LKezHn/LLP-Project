@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 #Gramatica de Javascript
-#Test
 
 """
 ! Terminado:
@@ -10,19 +9,17 @@
     * Declaración y ejecución de funciones de hasta 2 parámetros (sin parámetros por defecto). El tipo de dato de los parámetros es el mismo que el de las asignaciones.
     * Generación de mensajes de salida (console.log y console.error). Deberá controlar el color de la salida en Linux para identificar el tipo de mensaje. Estos métodos nativamente permiten más de un parámetro.
     * Length de cualquier objeto.
-
-! Parcialmente Terminado
     * Estructuras de control de flujo (if, while, for). 
-        * Falta la interpretación de los tres.
-
+    
 ! Por empezar
     * Ejecución de funciones (recursivas o no).
 """
 
 javascriptGrammar = """
 
-    ?start: exp+ function+ 
-        | exp+ function+ start+
+    ?start: exp+ function+ exp+ function+ exp+
+        | function+
+        | exp+
 
     ?exp: varkeyword identifier opequals string eos -> assignvar
         | varkeyword identifier opequals string opsum identifier eos -> assignvaralt
@@ -76,9 +73,9 @@ javascriptGrammar = """
         | infuncexp+ returnkeyword infuncexp eos 
         | infuncexp+ returnkeyword identifier opmult identifier leftpar arithmeticoperation rightpar eos -> returnrecur
         
-    ?cond: (ifkeyword leftpar identifier opgrtrthan identifier rightpar leftbrace inif* rightbrace elsekeyword leftbrace inif* rightbrace) -> ifelse
-        |  (ifkeyword leftpar identifier oplessthan identifier rightpar leftbrace inif* rightbrace elsekeyword leftbrace inif* rightbrace) -> ifelse
-        |  (ifkeyword leftpar identifier opcompare identifier rightpar leftbrace inif* rightbrace elsekeyword leftbrace inif* rightbrace) -> ifelse
+    ?cond: (ifkeyword leftpar identifier opgrtrthan identifier rightpar leftbrace inif* rightbrace elsekeyword leftbrace inif* rightbrace)
+        |  (ifkeyword leftpar identifier oplessthan identifier rightpar leftbrace inif* rightbrace elsekeyword leftbrace inif* rightbrace) 
+        |  (ifkeyword leftpar identifier opcompare identifier rightpar leftbrace inif* rightbrace elsekeyword leftbrace inif* rightbrace)
 
         | ifkeyword leftpar identifier opgrtrthan identifier rightpar returnkeyword (int | float) eos -> ifcondgnames
         | ifkeyword leftpar identifier opgrtrthan identifier rightpar returnkeyword identifier eos -> ifcondgnames

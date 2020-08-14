@@ -8,7 +8,6 @@ class javascriptSemantic (Transformer):
     def __init__(self):
         self.variables = {}
         self.functions = {}
-        self.paramidentifier = {}
 
     def sum (self,param):
         new,new2 = int(param[0]), int(param[2]) 
@@ -90,11 +89,30 @@ class javascriptSemantic (Transformer):
             return param[1:-1]
         return param
 
-    def createfunc(self,param): 
+    def createfunc(self,param):
         if(len(param) == 8):
-            self.functions[param[1]] = param[3]
+            for i in range(len(param)):
+                if param[3] not in self.variables:
+                    self.variables[param[3]] = None
+                else:
+                    pass
+
+            self.functions[param[1]] = param[3]     
+
         elif(len(param) == 9):
+            for i in range(len(param)):
+                if param[3] in self.variables and param[4] not in self.variables:
+                    self.variables[param[4]] = None
+
+                elif param[3] not in self.variables and param[4] not in self.variables:
+                    self.variables[param[3]] = None
+                    self.variables[param[4]] = None
+
+                else:
+                    pass
+
             self.functions[param[1]] = param[3],param[4]
+
         elif(len(param) == 7):
             self.functions[param[1]] = 0
 
@@ -105,7 +123,7 @@ class javascriptSemantic (Transformer):
                 param1 = int(param[2])
                 param2 = int(param[3])
                 if(isinstance(param1,int) and isinstance(param2,int)):
-                    self.assignvarfunc(param1,param2)
+                    print(self.variables)
             except:
                 pass
         else:
