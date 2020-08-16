@@ -675,7 +675,6 @@ class javascriptSemantic (Transformer):
             increment = int(param1)
             while(increment < int(param2)):
                 self.execwhile(param[7])
-                increment += 1
 
         elif(param[2].type=="__ANON_0" and param[4].type=="__ANON_0"):
             increment = int(param1)
@@ -690,7 +689,6 @@ class javascriptSemantic (Transformer):
             increment = int(param[2])
             while(increment < int(param[4])):
                 self.execwhile(param[7])
-                increment += 1
 
     #Para While (x<=y)
     def whilelessequal(self,param):
@@ -721,7 +719,6 @@ class javascriptSemantic (Transformer):
             increment = int(param1)
             while(increment <= int(param2)):
                 self.execwhile(param[7])
-                increment += 1
 
         elif(param[2].type=="__ANON_0" and param[4].type=="__ANON_0"):
             increment = int(param1)
@@ -736,7 +733,6 @@ class javascriptSemantic (Transformer):
             increment = int(param[2])
             while(increment <= int(param[4])):
                 self.execwhile(param[7])
-                increment += 1
 
     #Para While (x>y)
     def whilemore(self,param):
@@ -766,7 +762,6 @@ class javascriptSemantic (Transformer):
             increment = int(param1)
             while(increment < int(param2)):
                 self.execwhile(param[7])
-                increment += 1
 
         elif(param[2].type=="__ANON_0" and param[4].type=="__ANON_0"):
             increment = int(param1)
@@ -781,7 +776,6 @@ class javascriptSemantic (Transformer):
             increment = int(param[2])
             while(increment > int(param[4])):
                 self.execwhile(param[7])
-                increment += 1
 
     #Para While (x>=y)
     def whilemorequal(self,param):
@@ -812,7 +806,6 @@ class javascriptSemantic (Transformer):
             increment = int(param1)
             while(increment >= int(param2)):
                 self.execwhile(param[7])
-                increment += 1
 
         elif(param[2].type=="__ANON_0" and param[4].type=="__ANON_0"):
             increment = int(param1)
@@ -827,7 +820,6 @@ class javascriptSemantic (Transformer):
             increment = int(param[2])
             while(increment >= int(param[4])):
                 self.execwhile(param[7])
-                increment += 1
 
     #Para While (x==y)
     def whilequal(self,param):
@@ -858,7 +850,6 @@ class javascriptSemantic (Transformer):
             increment = int(param1)
             while(increment == int(param2)):
                 self.execwhile(param[7])
-                increment += 1
 
         elif(param[2].type=="__ANON_0" and param[4].type=="__ANON_0"):
             increment = int(param1)
@@ -873,7 +864,6 @@ class javascriptSemantic (Transformer):
             increment = int(param[2])
             while(increment == int(param[4])):
                 self.execwhile(param[7])
-                increment += 1
     """
     Ejecuta todos los fors dentro de la funcion ejecutandose
 
