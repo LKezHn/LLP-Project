@@ -19,12 +19,15 @@ class LanguageRecognizer:
     def recognizeJS(self,filename,content):
         errorMessage = "\033[1;31mError: %s."
         if(filename.endswith('.js')):
-
-            parser = Lark(javascriptGrammar, parser="lalr",transformer = javascriptSemantic())
+            
+            transformer = javascriptSemantic()
+            parser = Lark(javascriptGrammar, parser="lalr",transformer = transformer)
             language = parser.parse
             sample = content
             try:
                 language(sample)
+                print("\n")
+                printTable(transformer.variables,transformer.functions,transformer.paramidentifier)
             except Exception as e:
                 self.isJavascript = False
                 quit(errorMessage % e)
