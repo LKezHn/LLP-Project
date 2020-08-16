@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 #Gramatica de Javascript
+#Test
 
 """
 ! Terminado:
@@ -9,17 +10,16 @@
     * Declaración y ejecución de funciones de hasta 2 parámetros (sin parámetros por defecto). El tipo de dato de los parámetros es el mismo que el de las asignaciones.
     * Generación de mensajes de salida (console.log y console.error). Deberá controlar el color de la salida en Linux para identificar el tipo de mensaje. Estos métodos nativamente permiten más de un parámetro.
     * Length de cualquier objeto.
-    * Estructuras de control de flujo (if, while, for). 
-    
-! Por empezar
-    * Ejecución de funciones (recursivas o no).
+    * Estructuras de control de flujo (if, while, for)
+    * Ejecucion de funciones (recursivas o no)
+
 """
 
 javascriptGrammar = """
 
-    ?start: exp+ function+ exp+ function+ exp+
-        | function+
-        | exp+
+    ?start: function+ exp+ 
+        | function+ 
+        | exp+ 
 
     ?exp: varkeyword identifier opequals string eos -> assignvar
         | varkeyword identifier opequals string opsum identifier eos -> assignvaralt
@@ -27,7 +27,7 @@ javascriptGrammar = """
         | varkeyword identifier opequals bool eos -> assignvar 
 
         | consolelog leftpar string rightpar eos -> print_
-        | consolelog leftpar string "," identifier leftpar identifier rightpar rightpar eos 
+        | consolelog leftpar string "," identifier leftpar (identifier | int | float) rightpar rightpar eos -> printwithfunc
         | consolelog leftpar string opsum identifier rightpar eos -> print_alt
 
         | consolelog leftpar identifier rightpar eos -> printvar
@@ -38,26 +38,24 @@ javascriptGrammar = """
 
         | consoleerror leftpar string rightpar eos -> print_error
 
-        | identifier leftpar (int | float) "," (int | float) rightpar eos -> funcexists
-        | identifier leftpar (int | float) "," identifier rightpar eos -> funcexists
-        | identifier leftpar identifier "," (int | float) rightpar eos -> funcexists
-        | identifier leftpar identifier "," identifier rightpar eos -> funcexists
-        | identifier leftpar identifier rightpar eos -> funcexists
-        | identifier leftpar (int | float) rightpar eos
+        | identifier leftpar (int | float | identifier) "," (int | float | identifier) rightpar eos -> funcexists
+        | identifier leftpar (identifier | int | float) rightpar eos -> funcexists
 
         | length
 
         | cond
 
-        | whileoperation
+        | while
 
-        | foroperation
+        | for
 
-    ?function: funkeyword identifier leftpar paramidentifier rightpar leftbrace infunc* rightbrace -> createfunc
-        | funkeyword identifier leftpar paramidentifier "," paramidentifier rightpar leftbrace infunc* rightbrace -> createfunc
+    ?function: funkeyword identifier leftpar identifier rightpar leftbrace infunc* rightbrace -> createfunc
+        | funkeyword identifier leftpar identifier "," identifier rightpar leftbrace infunc* rightbrace -> createfunc
         | funkeyword identifier leftpar rightpar leftbrace infunc* rightbrace -> createfunc
 
-    ?infuncexp: cond
+    ?infuncexp: cond+
+        | while+
+        | for+
         | consolelog leftpar string rightpar eos -> consolelogfunc
         | consoleerror leftpar string rightpar eos -> consoleerrorfunc
         | consolelog leftpar identifier "." "length" rightpar eos -> consoleloglengthfunc
@@ -68,29 +66,29 @@ javascriptGrammar = """
 
         | consolelog leftpar arithmeticoperation rightpar eos -> consolelogfunc
         | consolelog leftpar arithmeticoperation "+" arithmeticoperation rightpar eos -> consolelogatomfunc
+        | varkeyword identifier opequals string eos 
+        | varkeyword identifier opequals string opsum identifier eos 
+        | varkeyword identifier opequals arithmeticoperation eos 
+        | varkeyword identifier opequals bool eos 
 
     ?infunc: infuncexp+ 
-        | infuncexp+ returnkeyword infuncexp eos 
-        | infuncexp+ returnkeyword identifier opmult identifier leftpar arithmeticoperation rightpar eos -> returnrecur
+        | infuncexp+ returnrecursive 
+
+    ?returnrecursive: returnkeyword identifier opmult identifier leftpar arithmeticoperation rightpar eos -> returnrecur
         
-    ?cond: (ifkeyword leftpar identifier opgrtrthan identifier rightpar leftbrace inif* rightbrace elsekeyword leftbrace inif* rightbrace)
-        |  (ifkeyword leftpar identifier oplessthan identifier rightpar leftbrace inif* rightbrace elsekeyword leftbrace inif* rightbrace) 
-        |  (ifkeyword leftpar identifier opcompare identifier rightpar leftbrace inif* rightbrace elsekeyword leftbrace inif* rightbrace)
-
-        | ifkeyword leftpar identifier opgrtrthan identifier rightpar returnkeyword (int | float) eos -> ifcondgnames
-        | ifkeyword leftpar identifier opgrtrthan identifier rightpar returnkeyword identifier eos -> ifcondgnames
-        | ifkeyword leftpar identifier opgrtrthan (int | float) rightpar returnkeyword (int | float) eos -> ifcondg
-        | ifkeyword leftpar identifier opgrtrthan (int | float) rightpar returnkeyword identifier eos -> ifcondg
-
-        | ifkeyword leftpar identifier opcompare identifier rightpar returnkeyword (int | float) eos -> ifcondenames
-        | ifkeyword leftpar identifier opcompare identifier rightpar returnkeyword identifier eos -> ifcondenames
-        | ifkeyword leftpar identifier opcompare (int | float) rightpar returnkeyword (int | float) eos -> ifconde
-        | ifkeyword leftpar identifier opcompare (int | float) rightpar returnkeyword identifier eos -> ifconde
-
-        | ifkeyword leftpar identifier oplessthan identifier rightpar returnkeyword (int | float) eos -> ifcondlnames
-        | ifkeyword leftpar identifier oplessthan identifier rightpar returnkeyword identifier eos -> ifcondlnames
-        | ifkeyword leftpar identifier oplessthan (int | float) rightpar returnkeyword (int | float) eos -> ifcondl
-        | ifkeyword leftpar identifier oplessthan (int | float) rightpar returnkeyword identifier eos -> ifcondl
+    ?cond: ifkeyword leftpar identifier (opgrtrthan | oplessthan | opcompare | opgrtrthanequal | oplessthanequal) identifier rightpar leftbrace inif* rightbrace elsekeyword leftbrace inif* rightbrace
+        |  ifkeyword leftpar (int | float) (opgrtrthan | oplessthan | opcompare | opgrtrthanequal | oplessthanequal) (int | float) rightpar leftbrace inif* rightbrace elsekeyword leftbrace inif* rightbrace
+        |  ifkeyword leftpar (int | float) (opgrtrthan | oplessthan | opcompare | opgrtrthanequal | oplessthanequal) identifier rightpar leftbrace inif* rightbrace elsekeyword leftbrace inif* rightbrace
+        |  ifkeyword leftpar identifier (opgrtrthan | oplessthan | opcompare | opgrtrthanequal | oplessthanequal) (int | float) rightpar leftbrace inif* rightbrace elsekeyword leftbrace inif* rightbrace
+       
+        | ifkeyword leftpar identifier (opgrtrthan | oplessthan | opcompare | opgrtrthanequal | oplessthanequal) identifier rightpar returnkeyword (int | float) eos 
+        | ifkeyword leftpar identifier (opgrtrthan | oplessthan | opcompare | opgrtrthanequal | oplessthanequal) identifier rightpar returnkeyword identifier eos 
+        | ifkeyword leftpar identifier (opgrtrthan | oplessthan | opcompare | opgrtrthanequal | oplessthanequal) (int | float) rightpar returnkeyword (int | float) eos 
+        | ifkeyword leftpar identifier (opgrtrthan | oplessthan | opcompare | opgrtrthanequal | oplessthanequal) (int | float) rightpar returnkeyword identifier eos 
+        | ifkeyword leftpar (int | float) (opgrtrthan | oplessthan | opcompare | opgrtrthanequal | oplessthanequal) identifier rightpar returnkeyword (int | float) eos 
+        | ifkeyword leftpar (int | float) (opgrtrthan | oplessthan | opcompare | opgrtrthanequal | oplessthanequal) identifier rightpar returnkeyword identifier eos 
+        | ifkeyword leftpar (int | float) (opgrtrthan | oplessthan | opcompare | opgrtrthanequal | oplessthanequal) (int | float) rightpar returnkeyword identifier eos
+        | ifkeyword leftpar (int | float) (opgrtrthan | oplessthan | opcompare | opgrtrthanequal | oplessthanequal) (int | float) rightpar returnkeyword (int | float) eos
         
 
     ?increment: identifier "+" "+" ";" 
@@ -109,28 +107,33 @@ javascriptGrammar = """
         | consolelog leftpar arithmeticoperation rightpar eos -> consolelogcond
         | consolelog leftpar arithmeticoperation "+" arithmeticoperation rightpar eos -> consolelogatomcond
         | cond
+        | while
+        | for
+        | varkeyword identifier opequals string eos -> assignvarinif
+        | varkeyword identifier opequals string opsum identifier eos -> assignvarinif
+        | varkeyword identifier opequals arithmeticoperation eos -> assignvarinif
+        | varkeyword identifier opequals bool eos -> assignvarinif
 
-    ?whileoperation: whilekeyword leftpar identifier opgrtrthan identifier rightpar leftbrace inif* increment rightbrace -> whiles
-        | whilekeyword leftpar identifier opgrtrthan (int | float) rightpar leftbrace inif* increment rightbrace -> whiles
-        | whilekeyword leftpar identifier oplessthan identifier rightpar leftbrace inif* increment rightbrace -> whiles
-        | whilekeyword leftpar identifier oplessthan (int | float) rightpar leftbrace inif* increment rightbrace -> whiles
-        | whilekeyword leftpar identifier opcompare identifier rightpar leftbrace inif* increment rightbrace -> whiles
-        | whilekeyword leftpar identifier opcompare (int | float) rightpar leftbrace inif* increment rightbrace -> whiles
+    ?while: whilekeyword leftpar identifier (opgrtrthan | oplessthan | opcompare | opgrtrthanequal | oplessthanequal) identifier rightpar leftbrace inif* increment rightbrace
+        | whilekeyword leftpar identifier (opgrtrthan | oplessthan | opcompare | opgrtrthanequal | oplessthanequal) identifier rightpar leftbrace inif* increment rightbrace 
+        | whilekeyword leftpar identifier (opgrtrthan | oplessthan | opcompare | opgrtrthanequal | oplessthanequal) (int | float) rightpar leftbrace inif* increment rightbrace
+        | whilekeyword leftpar identifier (opgrtrthan | oplessthan | opcompare | opgrtrthanequal | oplessthanequal) (int | float) rightpar leftbrace inif* increment rightbrace
+        | whilekeyword leftpar (int | float) (opgrtrthan | oplessthan | opcompare | opgrtrthanequal | oplessthanequal) identifier rightpar leftbrace inif* increment rightbrace 
+        | whilekeyword leftpar (int | float) (opgrtrthan | oplessthan | opcompare | opgrtrthanequal | oplessthanequal) identifier rightpar leftbrace inif* increment rightbrace
+        | whilekeyword leftpar (int | float) (opgrtrthan | oplessthan | opcompare | opgrtrthanequal | oplessthanequal) (int | float) rightpar leftbrace inif* increment rightbrace
+        | whilekeyword leftpar (int | float) (opgrtrthan | oplessthan | opcompare | opgrtrthanequal | oplessthanequal) (int | float) rightpar leftbrace inif* increment rightbrace
 
-    ?foroperation: forkeyword leftpar identifier opequals (int | float) eos identifier oplessthan (int | float) eos increment rightpar leftbrace inif* rightbrace -> fors
+    ?for: forkeyword leftpar identifier opequals (int | float) eos identifier (oplessthan | oplessthanequal)  ((int | float) | identifier) eos increment rightpar leftbrace inif* rightbrace 
 
     ?identifier: /[a-zA-Z]\w*/
 
-    ?paramidentifier: /[a-zA-Z]\w*/ 
-
     ?arithmeticoperation: arithmeticoperationatom
+        | arithmeticoperation opsum arithmeticoperationatom 
+        | arithmeticoperation opsub arithmeticoperationatom 
+        | arithmeticoperation opmult arithmeticoperationatom 
+        | arithmeticoperation opdiv arithmeticoperationatom 
 
-        | arithmeticoperation opsum arithmeticoperationatom -> sum
-        | arithmeticoperation opsub arithmeticoperationatom -> sub
-        | arithmeticoperation opmult arithmeticoperationatom -> multi
-        | arithmeticoperation opdiv arithmeticoperationatom -> div
-
-    ?arithmeticoperationatom: identifier -> getvar
+    ?arithmeticoperationatom: identifier 
         | int
         | float
         | leftpar arithmeticoperation rightbrace 
@@ -185,9 +188,9 @@ javascriptGrammar = """
 
     !oplessthan: "<" -> oplessthan
 
-    !opgrtrthanequal: ">="
+    !opgrtrthanequal: ">=" -> opgrtrthanequal
 
-    !oplessthanequal: "<="
+    !oplessthanequal: "<=" -> oplessthanequal
 
     !eos: ";" -> eos
 
