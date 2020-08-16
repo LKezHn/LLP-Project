@@ -3,7 +3,7 @@ import re
 from ..lark import Transformer, v_args
 from ..lark import Tree
 from ..lark import Token
-from SymbolTable import printTable
+
 
 errorMessage = "\033[1;31m%s"
 class javascriptSemantic (Transformer):
