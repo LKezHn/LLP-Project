@@ -1,18 +1,29 @@
 # -*- coding: utf-8 -*-
 
+"""
+    Clase creada para manejar las distintas tablas mostradas por el programa.
+    @author lemartinezm|unah.hn daniel.arteaga@unah.hn eglopezl@unah.hn brando.fernandez@unah.hn
+    @version 0.0.1
+"""
+
 class Table:
     def __init__(self): pass
 
+    """
+        Funcion encargada de mostrar una tabla con información sobre el proyecto como ser: autores,
+        version del proyecto, opcion elegida por el usuario y el resultado obtenido.
+        @param param Es la opción elegida por el usuario.
+        @author lemartinezm@unah.hn
+    """
     def printInfoTable(self,param):
             print("*"*40)
             print("{1} {0:36s} {1}".format("","*"))
             print("{1} {0:36s} {1}".format("Intérprete de Lenguajes","*"))
-            print("{1} {0:36s} {1}".format("@authors:","*"))
+            print("{1} {0:36s} {1}".format("@author:","*"))
             print("{1} {0:31s} {1}".format("\tlemartinezm@unah.hn","*"))
             print("{1} {0:31s} {1}".format("\tdaniel.arteaga@unah.hn","*"))
             print("{1} {0:31s} {1}".format("\teglopezl@unah.hn","*"))   
             print("{1} {0:31s} {1}".format("\tbrando.fernandez@unah.hn","*"))
-            print("{1} {0:31s} {1}".format("\tcorreos","*"))
             print("{1} {0:36s} {1}".format("@version 0.0.1","*"))
             print("*"*40)
             print("{1} {0:36s} {1}".format("Opción Elegida:","*"))
