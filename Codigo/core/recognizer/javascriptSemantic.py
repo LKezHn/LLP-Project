@@ -649,8 +649,8 @@ class javascriptSemantic (Transformer):
 
     #Para While (x<y)
     def whileless(self,param):
-        param1 = str(self.currentfunc+"_param_1_"+param[2])
-        param2 = str(self.currentfunc+"_param_2_"+param[4])
+        param1 = str(param[2])
+        param2 = str(param[4])
         if(param1 in self.paramidentifier):
             param1 = float(self.getparam(param1).value)
         if(param2 in self.paramidentifier):
@@ -664,20 +664,27 @@ class javascriptSemantic (Transformer):
 
         if(param[2].type=="__ANON_0" and param[4].type=="__ANON_7"):
             increment = int(param1)
-            while(increment < int(param[4])):
-                self.execwhile(param[7])
-                increment += 1
+            if(param[2] == param[8]):
+                while(increment < int(param[4])):
+                    self.execwhile(param[7])
+                    increment += 1
+            else:
+                pass
         
-        elif(param[4].type=="__ANON_7" and param[2].type=="__ANON_0"):
-            while(param1 < param2):
-                self.execwhile(param[7])
-                param1 += 1
-
-        elif(param[2].type=="__ANON_0" and param[2].type=="__ANON_0"):
+        elif(param[2].type=="__ANON_7" and param[4].type=="__ANON_0"):
             increment = int(param1)
             while(increment < int(param2)):
                 self.execwhile(param[7])
                 increment += 1
+
+        elif(param[2].type=="__ANON_0" and param[4].type=="__ANON_0"):
+            increment = int(param1)
+            if(param[2] == param[8]):
+                while(increment < int(param2)):
+                    self.execwhile(param[7])
+                    increment += 1
+            else:
+                pass
 
         elif(param[2].type=="__ANON_7" and param[4].type=="__ANON_7"):
             increment = int(param[2])
@@ -688,8 +695,8 @@ class javascriptSemantic (Transformer):
     #Para While (x<=y)
     def whilelessequal(self,param):
 
-        param1 = str(self.currentfunc+"_param_1_"+param[2])
-        param2 = str(self.currentfunc+"_param_2_"+param[4])
+        param1 = str(param[2])
+        param2 = str(param[4])
         if(param1 in self.paramidentifier):
             param1 = float(self.getparam(param1).value)
         if(param2 in self.paramidentifier):
@@ -703,20 +710,27 @@ class javascriptSemantic (Transformer):
 
         if(param[2].type=="__ANON_0" and param[4].type=="__ANON_7"):
             increment = int(param1)
-            while(increment <= int(param[4])):
-                self.execwhile(param[7])
-                increment += 1
+            if(param[2] == param[8]):
+                while(increment <= int(param[4])):
+                    self.execwhile(param[7])
+                    increment += 1
+            else:
+                pass
         
-        elif(param[4].type=="__ANON_7" and param[2].type=="__ANON_0"):
-            while(param1 <= param2):
-                self.execwhile(param[7])
-                param1 += 1
-
-        elif(param[2].type=="__ANON_0" and param[2].type=="__ANON_0"):
+        elif(param[2].type=="__ANON_7" and param[4].type=="__ANON_0"):
             increment = int(param1)
             while(increment <= int(param2)):
                 self.execwhile(param[7])
                 increment += 1
+
+        elif(param[2].type=="__ANON_0" and param[4].type=="__ANON_0"):
+            increment = int(param1)
+            if(param[2] == param[8]):
+                while(increment <= int(param2)):
+                    self.execwhile(param[7])
+                    increment += 1
+            else:
+                pass
 
         elif(param[2].type=="__ANON_7" and param[4].type=="__ANON_7"):
             increment = int(param[2])
@@ -726,8 +740,8 @@ class javascriptSemantic (Transformer):
 
     #Para While (x>y)
     def whilemore(self,param):
-        param1 = str(self.currentfunc+"_param_1_"+param[2])
-        param2 = str(self.currentfunc+"_param_2_"+param[4])
+        param1 = str(param[2])
+        param2 = str(param[4])
         if(param1 in self.paramidentifier):
             param1 = float(self.getparam(param1).value)
         if(param2 in self.paramidentifier):
@@ -738,22 +752,30 @@ class javascriptSemantic (Transformer):
             param1 = self.getvar(funcvar1)        
         if(funcvar2 in self.variables):
             param2 = self.getvar(funcvar2)
+
         if(param[2].type=="__ANON_0" and param[4].type=="__ANON_7"):
             increment = int(param1)
-            while(increment > int(param[4])):
-                self.execwhile(param[7])
-                increment += 1
+            if(param[2] == param[8]):
+                while(increment > int(param[4])):
+                    self.execwhile(param[7])
+                    increment += 1
+            else:
+                pass
         
-        elif(param[4].type=="__ANON_7" and param[2].type=="__ANON_0"):
-            while(param1 > param2):
-                self.execwhile(param[7])
-                param1 += 1
-
-        elif(param[2].type=="__ANON_0" and param[2].type=="__ANON_0"):
+        elif(param[2].type=="__ANON_7" and param[4].type=="__ANON_0"):
             increment = int(param1)
-            while(increment > int(param2)):
+            while(increment < int(param2)):
                 self.execwhile(param[7])
                 increment += 1
+
+        elif(param[2].type=="__ANON_0" and param[4].type=="__ANON_0"):
+            increment = int(param1)
+            if(param[2] == param[8]):
+                while(increment > int(param2)):
+                    self.execwhile(param[7])
+                    increment += 1
+            else:
+                pass
 
         elif(param[2].type=="__ANON_7" and param[4].type=="__ANON_7"):
             increment = int(param[2])
@@ -764,8 +786,8 @@ class javascriptSemantic (Transformer):
     #Para While (x>=y)
     def whilemorequal(self,param):
 
-        param1 = str(self.currentfunc+"_param_1_"+param[2])
-        param2 = str(self.currentfunc+"_param_2_"+param[4])
+        param1 = str(param[2])
+        param2 = str(param[4])
         if(param1 in self.paramidentifier):
             param1 = float(self.getparam(param1).value)
         if(param2 in self.paramidentifier):
@@ -779,20 +801,27 @@ class javascriptSemantic (Transformer):
 
         if(param[2].type=="__ANON_0" and param[4].type=="__ANON_7"):
             increment = int(param1)
-            while(increment >= int(param[4])):
-                self.execwhile(param[7])
-                increment += 1
+            if(param[2] == param[8]):
+                while(increment >= int(param[4])):
+                    self.execwhile(param[7])
+                    increment += 1
+            else:
+                pass
         
-        elif(param[4].type=="__ANON_7" and param[2].type=="__ANON_0"):
-            while(param1 >= param2):
-                self.execwhile(param[7])
-                param1 += 1
-
-        elif(param[2].type=="__ANON_0" and param[2].type=="__ANON_0"):
+        elif(param[2].type=="__ANON_7" and param[4].type=="__ANON_0"):
             increment = int(param1)
             while(increment >= int(param2)):
                 self.execwhile(param[7])
                 increment += 1
+
+        elif(param[2].type=="__ANON_0" and param[4].type=="__ANON_0"):
+            increment = int(param1)
+            if(param[2] == param[8]):
+                while(increment >= int(param2)):
+                    self.execwhile(param[7])
+                    increment += 1
+            else:
+                pass
 
         elif(param[2].type=="__ANON_7" and param[4].type=="__ANON_7"):
             increment = int(param[2])
@@ -803,8 +832,8 @@ class javascriptSemantic (Transformer):
     #Para While (x==y)
     def whilequal(self,param):
 
-        param1 = str(self.currentfunc+"_param_1_"+param[2])
-        param2 = str(self.currentfunc+"_param_2_"+param[4])
+        param1 = str(param[2])
+        param2 = str(param[4])
         if(param1 in self.paramidentifier):
             param1 = float(self.getparam(param1).value)
         if(param2 in self.paramidentifier):
@@ -818,20 +847,27 @@ class javascriptSemantic (Transformer):
 
         if(param[2].type=="__ANON_0" and param[4].type=="__ANON_7"):
             increment = int(param1)
-            while(increment == int(param[4])):
-                self.execwhile(param[7])
-                increment += 1
+            if(param[2] == param[8]):
+                while(increment == int(param[4])):
+                    self.execwhile(param[7])
+                    increment += 1
+            else:
+                pass
         
-        elif(param[4].type=="__ANON_7" and param[2].type=="__ANON_0"):
-            while(param1 == param2):
-                self.execwhile(param[7])
-                param1 += 1
-
-        elif(param[2].type=="__ANON_0" and param[2].type=="__ANON_0"):
+        elif(param[2].type=="__ANON_7" and param[4].type=="__ANON_0"):
             increment = int(param1)
             while(increment == int(param2)):
                 self.execwhile(param[7])
                 increment += 1
+
+        elif(param[2].type=="__ANON_0" and param[4].type=="__ANON_0"):
+            increment = int(param1)
+            if(param[2] == param[8]):
+                while(increment == int(param2)):
+                    self.execwhile(param[7])
+                    increment += 1
+            else:
+                pass
 
         elif(param[2].type=="__ANON_7" and param[4].type=="__ANON_7"):
             increment = int(param[2])
@@ -903,6 +939,7 @@ class javascriptSemantic (Transformer):
             increment = int(param1)
             for increment in range(int(param2)+1):
                 self.execfor(param[13])
+
         elif(param[6].type=="__ANON_0" and param[8].type=="__ANON_0"):
             increment = int(param1)
             for increment in range(int(param2)+1):
@@ -1044,6 +1081,12 @@ class javascriptSemantic (Transformer):
         return param[0]
 
     def oplessthan(self,param):
+        return param[0]
+
+    def opgrtrthanequal(self,param):
+        return param[0]
+
+    def oplessthanequal(self,param):
         return param[0]
 
     def forw(self,param):

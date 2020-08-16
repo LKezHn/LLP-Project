@@ -6,6 +6,7 @@ from .rubyGrammar import *
 from .bashGrammar import *
 from .javascriptGrammar import *
 from .RecognizerSemantic import RecognizerSemantic
+from .SymbolTable import printTable
 
 """
     Clase encargada de realizar los diferentes análisis para poder reconocer si el codigco analizado pertenece al lenguaje
