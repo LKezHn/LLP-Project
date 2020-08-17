@@ -1003,8 +1003,7 @@ class javascriptSemantic (Transformer):
             print(int(self.getvar(param[2]))+int(self.getvar(param[3])))
 
     def consoleerrorfunc(self,param):
-        pass
-        #print(self.cleanParam(param[2]))
+        print(errorMessage % self.cleanParam(param[2]))
 
     def consolelogcond(self,param):
         list = param[0].children
