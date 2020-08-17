@@ -17,7 +17,7 @@ Javascript:
 
 * <ins>Lluvia de Ideas:</ins>
 
-    * ![image](https://drive.google.com/---------)
+    * ![image](https://drive.google.com/uc?id=1Uov1azXhZXwkJr7EGGHZQSZMBnND_lvM)
 
 * <ins>Hallazgos encontrados:</ins>
 

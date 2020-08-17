@@ -118,10 +118,10 @@ javascriptGrammar = """
         | whilekeyword leftpar identifier (opgrtrthan | oplessthan | opcompare | opgrtrthanequal | oplessthanequal) identifier rightpar leftbrace inif* increment rightbrace 
         | whilekeyword leftpar identifier (opgrtrthan | oplessthan | opcompare | opgrtrthanequal | oplessthanequal) (int | float) rightpar leftbrace inif* increment rightbrace
         | whilekeyword leftpar identifier (opgrtrthan | oplessthan | opcompare | opgrtrthanequal | oplessthanequal) (int | float) rightpar leftbrace inif* increment rightbrace
-        | whilekeyword leftpar (int | float) (opgrtrthan | oplessthan | opcompare | opgrtrthanequal | oplessthanequal) identifier rightpar leftbrace inif* increment rightbrace 
-        | whilekeyword leftpar (int | float) (opgrtrthan | oplessthan | opcompare | opgrtrthanequal | oplessthanequal) identifier rightpar leftbrace inif* increment rightbrace
-        | whilekeyword leftpar (int | float) (opgrtrthan | oplessthan | opcompare | opgrtrthanequal | oplessthanequal) (int | float) rightpar leftbrace inif* increment rightbrace
-        | whilekeyword leftpar (int | float) (opgrtrthan | oplessthan | opcompare | opgrtrthanequal | oplessthanequal) (int | float) rightpar leftbrace inif* increment rightbrace
+        | whilekeyword leftpar (int | float) (opgrtrthan | oplessthan | opcompare | opgrtrthanequal | oplessthanequal) identifier rightpar leftbrace inif* rightbrace 
+        | whilekeyword leftpar (int | float) (opgrtrthan | oplessthan | opcompare | opgrtrthanequal | oplessthanequal) identifier rightpar leftbrace inif* rightbrace
+        | whilekeyword leftpar (int | float) (opgrtrthan | oplessthan | opcompare | opgrtrthanequal | oplessthanequal) (int | float) rightpar leftbrace inif* rightbrace
+        | whilekeyword leftpar (int | float) (opgrtrthan | oplessthan | opcompare | opgrtrthanequal | oplessthanequal) (int | float) rightpar leftbrace inif* rightbrace
 
     ?for: forkeyword leftpar identifier opequals (int | float) eos identifier (oplessthan | oplessthanequal)  ((int | float) | identifier) eos increment rightpar leftbrace inif* rightbrace 
 
