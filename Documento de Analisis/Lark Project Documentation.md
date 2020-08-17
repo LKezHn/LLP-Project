@@ -1,5 +1,5 @@
 PAC II 2020 - LL 1100
-@author Daniel Arteaga, Luis Martinez, Brando Fernandez
+@author Daniel Arteaga, Luis Martinez, Brando Fernandez, Eduardo Lopez
 @date 2020/08/16
 
 Documentación Proyecto - Lenguajes de Programación:
@@ -32,6 +32,20 @@ Ruby y Bash:
         * Al encontrarse con un conflicto con la gramática de comentarios de múltiples líneas en Ruby se comienza a investigar la forma en la que trabaja Python Lark para poder solucionar el conflicto.
 
         * Al tener la gramática del lenguaje Ruby terminada, se encuentra un error al poder llamar a funciones no definidas o código perteneciente a otro Lenguaje, e.g.: `console.log("Hello World")` , por lo que se empieza a buscar la solución a éste error.
+
+## Lluvia de ideas
+
+?Que cosas necesitabamos hacer para la parte de reconocimiento del proyecto?
+
+* Definir la gramatica para el lenguaje de Bash
+* Definir la gramatica para el lenguaje de Ruby
+* Definir en ambas gramaticas las asignaciones de variables
+* Definir en las gramaticas la creación de funciones 
+* Definir el llamado de funciones
+* Definir la gramatica de bloques "if"
+* Definir la gramatica para ciclos
+* Crear un reconocedor de lenguajes
+* Crear reconocedor de Semantica
 
 Javascript:
 ====================================================
@@ -108,7 +122,7 @@ Esta proción de gramatica es utilizada para expresiones que se encuentran fuera
 
 Al tener lo basico de la gramatica y semantica se pudieron visualizar alguno escenarios en donde fallaba por ejemplo:
             
-- if's aninados, varios condicionales dentro de una sola función, ¿que pasa dentro de un condicional hay otro?
+- if's aninados, varios condicionales dentro de una sola función, ¿ que pasa dentro de un condicional hay otro?
 
 - Definición de variables dentro de una función.
 
@@ -123,11 +137,8 @@ Al tener lo basico de la gramatica y semantica se pudieron visualizar alguno esc
 **Otros casos**
 
 1. Cuando se parsea el archivo especifico con Lark, este envia la gramatica a un alias (si se especificó) donde se puede ejecutar. El problema es que detecta gramaticas dentro de funciones y estas se ejecutan sin antes haberse llamado la función. 
-
 2. v_args(inline=true) no resulta util para este proyecto, a veces las funciones especificadas en la semantica reciben más parametros de los que debería, esto ocurre porque depende de la cantidad de expresiones que contenga el arbol de gramatica. 
-
 3. v_args(tree=true) era una alternativa que retornaba un arbol que podia contener n expresiones. Sin embargo, este metodo no se aplicó porque encontramos que si utilizamos ningún v_args() nosotros podiamos definir lo que deseabamos retornar en la semantica si se detectaba una expresión. Por ejemplo, si se detectaba una asignación var = number, nosotros podiamos retornar una lista con los tokens sin necesidad de trabajar con arboles. 
-
 4. La solución del inciso (3) resultó tener una limitante, y es que siempre se devuelven arboles cuando se contienen expresiones dentro de otras expresiones (como estructuras de flujo y condicionales). Decidimos que podiamos trabajar con estos arboles siempre y cuando manteniamos el retorno de una lista con tokens.
 5. A veces nuestra lista contenía tokens, arboles y listas. Se iteró en la lista de modo que se verificaba el tipo de objeto para ver si era árbol, lista o Token. Si este árbol contenía una gramatica para estructuras de flujo y condiciones este se enviaba al metodo que la ejecutaría.
 
@@ -159,16 +170,3 @@ Lo mismo sucedía con los parametros, estos se nombraron con la siguiente estruc
 `
 <nombre_funcion>_param_<posición_de_parametro>_<nombre_del_parametro>
 `
-## Problemas con whiles, y fors
-
-**PREFACIO:**
-
-* Para poder identificar cuando hay mas de un condicional dentro de una función o aninados se tuvo que encontrar la forma de recorrer el árbol que proveé Lark, una vez se encontro la forma mas eficiente de hacerlo se reconoce y se ejecuta lo que hay dentro de cada condicional. Al mismo tiempo se busco todo escenario posible en cuanto a las operaciones que se pueden hacer dentro de estos dos condicionales (<,>,==,>=,<=)
-
-**WHILE'S:**
-
-* Al ser Javascript y Python lenguajes de programación que se parecen es ciertas cosas hacer el uso de while's en la semantica no presento problema. Los problemas encontrados en el condicional de While's fueron poder incrementar el valor de la variable dependiendo de cuantos recorridos sean, tener en cuenta en los escenarios donde puedan haber bucles infinitos etc.
-
-**FOR'S**:
-
-* En Javascript se trabaja el for de una manera muy distinta y no es la misma que Python. Investigando se llego a la manera para poder usar el condicional for de la misma manera que en Javascript. Una vez terminado lo anterior se procedio a encontrar problemas los cuales fueron los mismo que el condicional while, incrementar la variable dependiendo de su recorrido. 
