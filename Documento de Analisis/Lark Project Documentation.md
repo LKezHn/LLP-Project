@@ -33,9 +33,9 @@ Ruby y Bash:
 
         * Al tener la gramática del lenguaje Ruby terminada, se encuentra un error al poder llamar a funciones no definidas o código perteneciente a otro Lenguaje, e.g.: `console.log("Hello World")` , por lo que se empieza a buscar la solución a éste error.
 
-## Lluvia de ideas
+## Lluvia de Ideas
 
-?Que cosas necesitabamos hacer para la parte de reconocimiento del proyecto?
+¿Que cosas necesitabamos hacer para la parte de reconocimiento del proyecto?
 
 * Definir la gramatica para el lenguaje de Bash
 * Definir la gramatica para el lenguaje de Ruby
