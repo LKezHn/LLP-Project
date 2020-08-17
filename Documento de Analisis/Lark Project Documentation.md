@@ -1,5 +1,5 @@
 PAC II 2020 - LL 1100
-@author Daniel Arteaga, Luis Martinez, Brando Fernandez
+@author Daniel Arteaga, Luis Martinez, Brando Fernandez, Eduardo Lopez
 @date 2020/08/16
 
 Documentación Proyecto - Lenguajes de Programación:
@@ -32,6 +32,20 @@ Ruby y Bash:
         * Al encontrarse con un conflicto con la gramática de comentarios de múltiples líneas en Ruby se comienza a investigar la forma en la que trabaja Python Lark para poder solucionar el conflicto.
 
         * Al tener la gramática del lenguaje Ruby terminada, se encuentra un error al poder llamar a funciones no definidas o código perteneciente a otro Lenguaje, e.g.: `console.log("Hello World")` , por lo que se empieza a buscar la solución a éste error.
+
+## Lluvia de ideas
+
+?Que cosas necesitabamos hacer para la parte de reconocimiento del proyecto?
+
+* Definir la gramatica para el lenguaje de Bash
+* Definir la gramatica para el lenguaje de Ruby
+* Definir en ambas gramaticas las asignaciones de variables
+* Definir en las gramaticas la creación de funciones 
+* Definir el llamado de funciones
+* Definir la gramatica de bloques "if"
+* Definir la gramatica para ciclos
+* Crear un reconocedor de lenguajes
+* Crear reconocedor de Semantica
 
 Javascript:
 ====================================================
