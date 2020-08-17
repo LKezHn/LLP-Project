@@ -15,6 +15,9 @@ Forma de Trabajo
 
     Asignando cada parte a un equipo de trabajo de dos personas. Cada equipo decide de que manera trabajar su parte del proyecto, asi como las tareas específicas que debe realizar cada integrante.
 
+* Para llevar un mejor control sobre las tareas especificas de cada integrante se usa la app Trello.
+* De la misma forma se hace uso de Github para una mayor facilidad al momento de trabajar en el proyecto.
+
 Ruby y Bash:
 ============
 * Se lee la definición del proyecto para poder entender lo que se pide hacer con respecto al apartado de reconocimiento del lenguaje Ruby y Bash.
