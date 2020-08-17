@@ -926,12 +926,12 @@ class javascriptSemantic (Transformer):
             increment = int(param1)
             for increment in range(int(param2)):
                 self.execfor(param[13])
-                self.variables[funcvar1] = increment+1
+                self.variables[funcvar1] = increment
         elif(param[6].type=="__ANON_0" and param[8].type=="__ANON_0"):
             increment = int(param1)
             for increment in range(int(param2)):
                 self.execfor(param[13])
-                self.variables[funcvar1] = increment+1
+                self.variables[funcvar1] = increment
 
      #Para for i<=(algunNumero o identifier)
     def forlessequal(self,param):
@@ -952,13 +952,13 @@ class javascriptSemantic (Transformer):
             increment = int(param1)
             for increment in range(int(param2)+1):
                 self.execfor(param[13])
-                self.variables[funcvar1] = increment
+                self.variables[funcvar1] = increment+1
 
         elif(param[6].type=="__ANON_0" and param[8].type=="__ANON_0"):
             increment = int(param1)
             for increment in range(int(param2)+1):
                 self.execfor(param[13])
-                self.variables[funcvar1] = increment
+                self.variables[funcvar1] = increment+1
 
 
     def returnrecur(self, param):
