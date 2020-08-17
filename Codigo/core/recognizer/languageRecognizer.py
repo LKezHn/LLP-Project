@@ -11,7 +11,7 @@ from .SymbolTable import printTable
 """
     Clase encargada de realizar los diferentes análisis para poder reconocer si el codigco analizado pertenece al lenguaje
     Ruby, Bash o Javascript
-    @author lemartinezm|unah.hn daniel.arteaga@unah.hn eglopezl@unah.hn brando.fernandez@unah.hn
+    @author lemartinezm@unah.hn daniel.arteaga@unah.hn eglopezl@unah.hn brando.fernandez@unah.hn
     @version 0.0.1
 """
 class LanguageRecognizer:
